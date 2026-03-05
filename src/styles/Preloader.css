@@ -1,0 +1,256 @@
+/* ══════════════════════════════════════════
+   PRELOADER — LXY Creative Studio
+   Split-curtain reveal
+   Two panels (top/bottom) separate on exit
+══════════════════════════════════════════ */
+
+/* ── Wrapper ── */
+.pre {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* ── Each panel ── */
+.pre__panel {
+  position: absolute;
+  left: 0; right: 0;
+  background: var(--navy);
+  pointer-events: all;
+  transition: transform 0.95s cubic-bezier(0.76, 0, 0.24, 1);
+  overflow: hidden;
+}
+.pre__panel--top    { top: 0;    height: 52%; }
+.pre__panel--bottom { bottom: 0; height: 52%; }
+
+/* Split exit */
+.pre--exit .pre__panel--top    { transform: translateY(-100%); }
+.pre--exit .pre__panel--bottom { transform: translateY(100%); }
+
+/* ── Seam line between panels ── */
+.pre__seam {
+  position: absolute;
+  left: 0; right: 0;
+  top: calc(52% - 1px);
+  height: 1px;
+  background: rgba(255, 255, 255, 0.04);
+  z-index: 10001;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.pre--exit .pre__seam { opacity: 0; }
+
+/* ── Decorative vertical lines ── */
+.pre__vl {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.03);
+  pointer-events: none;
+}
+.pre__vl--l { left: 48px; }
+.pre__vl--r { right: 48px; }
+
+/* ══ TOP PANEL ══ */
+
+/* Meta bar */
+.pre__meta {
+  position: absolute;
+  top: 28px; left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 48px;
+  opacity: 0;
+  animation: preDown 0.5s 0.3s ease forwards;
+}
+.pre__meta-item {
+  font-family: var(--font-body);
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.18);
+}
+.pre__meta-dot {
+  display: inline-block;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--green);
+  opacity: 0.7;
+  margin-right: 8px;
+  vertical-align: middle;
+  position: relative; top: -1px;
+}
+
+/* Ghost year — decorative */
+.pre__year {
+  position: absolute;
+  bottom: 0; right: 48px;
+  font-family: var(--font-display);
+  font-size: clamp(60px, 9vw, 120px);
+  color: rgba(255, 255, 255, 0.03);
+  letter-spacing: -2px; line-height: 1;
+  user-select: none; pointer-events: none;
+}
+
+/* ── Wordmark clip container ── */
+/* Only the top half of the letters shows (panel clips at 52%) */
+.pre__mark {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.pre__wordmark {
+  font-family: var(--font-display);
+  font-size: clamp(100px, 17vw, 240px);
+  font-weight: 400;
+  letter-spacing: -6px;
+  line-height: 0.82;
+  color: var(--bg);
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+  display: flex;
+  gap: 0.04em;
+  user-select: none;
+}
+.pre__letter {
+  display: inline-block;
+  transform: translateY(100%);
+  opacity: 0;
+}
+.pre__letter--accent {
+  color: var(--green);
+  -webkit-text-stroke: 0;
+  opacity: 0; /* still starts hidden, animation handles it */
+}
+
+@keyframes letterRise {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);   opacity: 1; }
+}
+
+/* ══ MARQUEE ══ */
+.pre__marquee-wrap {
+  position: absolute;
+  top: 52%;
+  transform: translateY(-50%);
+  left: 0; right: 0;
+  z-index: 10002;
+  height: 28px;
+  overflow: hidden;
+  border-top:    1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(168, 255, 87, 0.03);
+  opacity: 0;
+  animation: preFadeIn 0.4s 0.6s ease forwards;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.pre--exit .pre__marquee-wrap { opacity: 0; }
+
+.pre__marquee-track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  align-items: center;
+  animation: marqueeScroll 14s linear infinite;
+}
+.pre__marquee-item {
+  font-family: var(--font-body);
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.15);
+  padding: 0 32px; white-space: nowrap;
+}
+.pre__marquee-item b {
+  color: var(--green);
+  opacity: 0.55;
+  font-weight: 600;
+  margin-left: 32px;
+}
+
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ══ BOTTOM PANEL ══ */
+
+/* Thin progress line at very top of bottom panel */
+.pre__progress {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+}
+.pre__progress-fill {
+  height: 100%; width: 0%;
+  background: var(--green);
+  box-shadow: 0 0 6px rgba(168, 255, 87, 0.6);
+  transition: width 0.1s linear;
+}
+
+/* Studio name — bottom left */
+.pre__wm-bottom {
+  position: absolute;
+  bottom: 32px; left: 48px;
+  opacity: 0;
+  animation: preUp 0.5s 0.3s ease forwards;
+}
+.pre__studio-name {
+  font-family: var(--font-body);
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* Counter — bottom right */
+.pre__counter {
+  position: absolute;
+  bottom: 28px; right: 48px;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  opacity: 0;
+  animation: preUp 0.5s 0.5s ease forwards;
+}
+.pre__num {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 400; line-height: 1;
+  letter-spacing: -2px;
+  color: rgba(255, 255, 255, 0.12);
+  transition: color 0.5s ease;
+}
+.pre__num--full { color: rgba(255, 255, 255, 0.65); }
+.pre__pct-sm {
+  font-family: var(--font-body);
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--green);
+  padding-bottom: 8px;
+}
+
+/* ══ KEYFRAMES ══ */
+@keyframes preUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes preDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes preFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 768px) {
+  .pre__meta         { padding: 0 24px; top: 20px; }
+  .pre__vl--l        { left: 24px; }
+  .pre__vl--r        { right: 24px; }
+  .pre__wm-bottom    { left: 24px; bottom: 24px; }
+  .pre__counter      { right: 24px; bottom: 24px; }
+  .pre__year         { right: 24px; }
+}

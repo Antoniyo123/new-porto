@@ -1,0 +1,24 @@
+/* ══════════════════════════════
+   APP — Layout Shell
+══════════════════════════════ */
+
+#root {
+  isolation: isolate;
+}
+
+.App {
+  position: relative;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* ── Section rhythm ── */
+.App > section + section {
+  border-top: 1px solid var(--border);
+}
+
+/* ── Page transitions (optional) ── */
+.App main {
+  opacity: 1;
+  transition: opacity var(--dur-med) var(--ease-in-out);
+}
