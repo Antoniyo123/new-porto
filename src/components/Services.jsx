@@ -1,53 +1,72 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../styles/Services.css';
 
-/* ─────────────────────────────────────────────
-   Services — LXY Creative Studio
-   Full-width accordion. Each row expands on
-   hover to reveal description + tags. Ghost
-   index number + left edge bar accent.
-───────────────────────────────────────────── */
-
 const SERVICES = [
   {
     no: '01',
-    title: 'Branding',
-    desc: 'Identity systems that define and differentiate your brand from everything else in the market.',
-    tags: ['Logo', 'Color System', 'Typography', 'Brand Voice'],
+    title: 'LOGO & BRANDING',
+    desc: 'Identity systems built to define and differentiate your brand across every touchpoint.',
+    img: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=380&q=80&auto=format&fit=crop',
   },
   {
     no: '02',
-    title: 'UI/UX Design',
-    desc: 'Interfaces built for clarity, delight, and real human interaction — from wireframe to final pixel.',
-    tags: ['Research', 'Wireframes', 'Prototyping', 'Design Systems'],
+    title: 'WEB DESIGN',
+    desc: 'With our commitment to creativity, innovation and order, we work closely with you to produce a website that fits your unique needs and vision.',
+    img: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=380&q=80&auto=format&fit=crop',
   },
   {
     no: '03',
-    title: 'Web Development',
-    desc: 'Fast, modern, production-ready builds. Clean, maintainable code that scales with your business.',
-    tags: ['Next.js', 'React', 'CMS', 'Performance'],
+    title: 'MOBILE APP',
+    desc: 'Native and cross-platform apps designed for clarity, speed, and real-world usability.',
+    img: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=380&q=80&auto=format&fit=crop',
   },
   {
     no: '04',
-    title: 'Motion Design',
-    desc: 'Animation and motion that bring brands and interfaces to life — from micro to full-screen.',
-    tags: ['After Effects', 'Lottie', 'CSS Animation', 'Interaction'],
+    title: 'ILLUSTRATION',
+    desc: 'Custom illustrations that give your brand a distinct visual language and personality.',
+    img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=380&q=80&auto=format&fit=crop',
+  },
+  {
+    no: '05',
+    title: 'DEVELOPMENT',
+    desc: 'Fast, modern, production-ready builds. Clean code that scales with your business.',
+    img: 'https://images.unsplash.com/photo-1555066931-4365d14431b9?w=380&q=80&auto=format&fit=crop',
+  },
+];
+
+const TESTIMONIALS = [
+  {
+    name: 'Martin Rosser',
+    role: 'CEO, Pentlar',
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&q=80&auto=format&fit=crop&crop=faces',
+    quote: '"We are very happy to work with such an amazing team! Our working experience is great. They have a deep understanding of our brand vision and values, and are able to present them in creative and impressive designs."',
+  },
+  {
+    name: 'Sarah Chen',
+    role: 'Founder, Arkon Studio',
+    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&q=80&auto=format&fit=crop&crop=faces',
+    quote: '"The team transformed our entire brand identity in just a few weeks. Professional, creative, and incredibly detail-oriented. The results exceeded every expectation we had."',
   },
 ];
 
 const Services = () => {
-  const [active, setActive] = useState(null);
-  const [visible, setVisible] = useState(false);
+  const [active, setActive]       = useState(null);
+  const [visible, setVisible]     = useState(false);
+  const [testimonial, setTestimonial] = useState(0);
   const ref = useRef(null);
 
   useEffect(() => {
     const obs = new IntersectionObserver(
       ([e]) => { if (e.isIntersecting) setVisible(true); },
-      { threshold: 0.06 }
+      { threshold: 0.04 }
     );
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
   }, []);
+
+  const prev = () => setTestimonial(i => (i - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
+  const next = () => setTestimonial(i => (i + 1) % TESTIMONIALS.length);
+  const t = TESTIMONIALS[testimonial];
 
   return (
     <section
@@ -55,62 +74,33 @@ const Services = () => {
       id="services"
       ref={ref}
     >
-
       {/* ── Header ── */}
       <div className="services__header">
-        <div className="services__header-left">
-          <div className="services__eyebrow">
-            <span className="services__eyebrow-dot" />
-            What We Do
-          </div>
-          <h2 className="services__heading">
-            Our<br /><em>Services</em>
-          </h2>
-        </div>
-        <div className="services__header-right">
-          <p className="services__subtitle">
-            Every project starts with a conversation —<br />
-            and ends with something remarkable.
-          </p>
-          <span className="services__count">0{SERVICES.length} Services</span>
-        </div>
+        <div className="services__eyebrow">// OUR SERVICES</div>
+        <h2 className="services__heading">OUR AREA OF SPECIALIZATION</h2>
       </div>
 
-      {/* ── Accordion list ── */}
+      {/* ── Service rows ── */}
       <div className="services__list">
         {SERVICES.map((s, i) => (
           <div
             key={s.no}
-            className={`svc${active === i ? ' svc--open' : ''}`}
+            className={`svc${active === i ? ' svc--active' : ''}`}
             onMouseEnter={() => setActive(i)}
             onMouseLeave={() => setActive(null)}
           >
-            {/* Left edge accent bar */}
-            <span className="svc__edge" aria-hidden="true" />
+            {/* floating preview image — only visible on active */}
+            <div className="svc__preview">
+              <img src={s.img} alt={s.title} />
+            </div>
 
-            {/* Ghost index behind content */}
-            <span className="svc__ghost" aria-hidden="true">{s.no}</span>
-
-            {/* Row */}
-            <div className="svc__row">
-              <span className="svc__no">{s.no}</span>
-
+            <div className="svc__inner">
               <h3 className="svc__title">{s.title}</h3>
-
-              {/* Desc — expands on hover */}
-              <div className="svc__desc-wrap">
-                <p className="svc__desc">{s.desc}</p>
-                <div className="svc__tags">
-                  {s.tags.map(tag => (
-                    <span key={tag} className="svc__tag">{tag}</span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Arrow circle */}
-              <div className="svc__arrow" aria-hidden="true">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <span className="svc__no">{s.no}</span>
+              <p className="svc__desc">{s.desc}</p>
+              <div className="svc__arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
             </div>
@@ -118,19 +108,33 @@ const Services = () => {
         ))}
       </div>
 
-      {/* ── Footer CTA ── */}
-      <div className="services__foot">
-        <p className="services__foot-text">
-          Not sure what you need? Let's figure it out together — no brief required.
-        </p>
-        <a href="mailto:hello@lxy.co" className="services__foot-cta">
-          <span>Start a project</span>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </a>
-      </div>
+      {/* ── Testimonial ── */}
+      <div className="testimonial">
+        <div className="testimonial__person">
+          <img className="testimonial__avatar" src={t.avatar} alt={t.name} />
+          <div>
+            <div className="testimonial__name">{t.name}</div>
+            <div className="testimonial__role">{t.role}</div>
+          </div>
+          <div className="testimonial__nav">
+            <button className="testimonial__btn" onClick={prev} aria-label="Previous">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M13 8H3M7 4L3 8l4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            <button className="testimonial__btn" onClick={next} aria-label="Next">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
 
+        <div className="testimonial__quote-col">
+          <span className="testimonial__mark" aria-hidden="true">"</span>
+          <p className="testimonial__quote">{t.quote}</p>
+        </div>
+      </div>
     </section>
   );
 };

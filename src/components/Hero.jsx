@@ -1,127 +1,111 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../styles/Hero.css';
 
-const WORDS = ['Branding', 'UI/UX', 'Motion', 'Web Dev'];
-
 const Hero = () => {
-  const [mounted, setMounted]   = useState(false);
-  const [wordIdx, setWordIdx]   = useState(0);
-  const [flipping, setFlipping] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [playing, setPlaying] = useState(false);
   const heroRef = useRef(null);
 
-  /* mount trigger */
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 60);
     return () => clearTimeout(t);
   }, []);
 
-  /* cycler */
-  useEffect(() => {
-    const id = setInterval(() => {
-      setFlipping(true);
-      setTimeout(() => {
-        setWordIdx(i => (i + 1) % WORDS.length);
-        setFlipping(false);
-      }, 340);
-    }, 2800);
-    return () => clearInterval(id);
-  }, []);
-
-  const scrollToNext = () => {
-    heroRef.current?.nextElementSibling?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
-    <section
-      className={`hero ${mounted ? 'hero--in' : ''}`}
-      ref={heroRef}
-      aria-label="LXY Creative Studio — Hero"
-    >
+    <div className={`page-wrapper ${mounted ? 'page--in' : ''}`}>
+      {/* ── NAV ── */}
+      <nav className="nav">
+        <div className="nav__logo">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="8" width="3" height="16" rx="1.5" fill="#111"/>
+            <rect x="8" y="4" width="3" height="24" rx="1.5" fill="#111"/>
+            <rect x="14" y="10" width="3" height="12" rx="1.5" fill="#111"/>
+            <rect x="20" y="6" width="3" height="20" rx="1.5" fill="#111"/>
+          </svg>
+        </div>
+        <ul className="nav__links">
+          <li><a href="#projects" className="nav__link nav__link--active">Project</a></li>
+          <li><a href="#about" className="nav__link">About</a></li>
+          <li><a href="#service" className="nav__link">Service</a></li>
+          <li><a href="#career" className="nav__link">Career</a></li>
+        </ul>
+        <a href="#contact" className="nav__cta">
+          Contact <span className="nav__cta-arrow">→</span>
+        </a>
+      </nav>
 
-  
-      {/* ── main body ── */}
-      <div className="hero__body">
-        <div className="hero__hl-block">
+      {/* ── HERO SECTION ── */}
+      <section className="hero" ref={heroRef} aria-label="Hero">
 
-          {/* LINE 1 */}
-          <div className="hero__line hero__line--1">
-            <span className="hero__word hero__word--stroke">We</span>
-            <span className="hero__word hero__word--fill">Design</span>
+        {/* Scroll indicator — left side */}
+        <div className="hero__scroll-indicator" aria-hidden="true">
+          <span className="hero__scroll-text">Scroll Down</span>
+          <div className="hero__scroll-line">
+            <span className="hero__scroll-dot" />
           </div>
-
-          {/* rule + eyebrow */}
-          <div className="hero__rule-row" aria-hidden="true">
-            <div className="hero__hrule" />
-            <span className="hero__eyebrow-inline">Jakarta-based creative studio</span>
-          </div>
-
-          {/* LINE 2 */}
-          <div className="hero__line hero__line--2">
-            <span className="hero__word hero__word--fill hero__word--italic">Brands</span>
-            <span className="hero__word hero__word--outline">&amp;</span>
-          </div>
-
-          {/* LINE 3 */}
-          <div className="hero__line hero__line--3">
-            <span className="hero__word hero__word--fill">Interfaces</span>
-            <span className="hero__period" aria-hidden="true">.</span>
-          </div>
-
         </div>
 
-        {/* ── cycler — below headline ── */}
-        <div className="hero__cycler-row" aria-live="polite" aria-atomic="true">
-          <span className="hero__cycler-prefix">Specialising in</span>
-          <span className="hero__cycler-track" aria-hidden="true">
-            <span className={`hero__cycler-word ${flipping ? 'hero__cycler-word--out' : ''}`}>
-              {WORDS[wordIdx]}
-            </span>
-          </span>
-          {/* visually hidden live text for screen readers */}
-          <span className="sr-only">{WORDS[wordIdx]}</span>
-        </div>
+        {/* ── Headline block ── */}
+        <div className="hero__content">
+          <div className="hero__headline-block">
+            <div className="hero__headline-row hero__headline-row--1">
+              <h1 className="hero__headline">WE COMPLETE</h1>
+              <a href="#contact" className="hero__talk-btn" aria-label="Let's talk now">
+                <span className="hero__talk-circle">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M4 10h12M12 5l5 5-5 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </span>
+                <span className="hero__talk-label">LET'S TALK NOW</span>
+              </a>
+            </div>
+            <div className="hero__headline-row hero__headline-row--2">
+              <h1 className="hero__headline hero__headline--indent">YOUR CREATIVE IDEAS</h1>
+            </div>
+          </div>
 
-        {/* ── footer ── */}
-        <div className="hero__foot">
+          {/* Tagline */}
           <p className="hero__tagline">
-            We build visual identities, design systems,<br />
-            and digital products — from concept to launch.
+            Oasic is a visionary design agency that breathes life into<br />
+            ideas and transforms them into extraordinary realities.
           </p>
+        </div>
 
-          <div className="hero__foot-right">
-            <a href="#projects" className="hero__cta" aria-label="View our work">
-              <span className="hero__cta-label">View Work</span>
-              <span className="hero__cta-arrow" aria-hidden="true">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </span>
-            </a>
-
-            {/* ── improved scroll cue ── */}
+        {/* ── Video / Media block ── */}
+        <div className="hero__media">
+          <div className="hero__media-inner">
+            {/* Decorative orb */}
+            <div className="hero__orb" aria-hidden="true" />
+            {/* Play button overlay */}
             <button
-              className="hero__scroll-btn"
-              onClick={scrollToNext}
-              aria-label="Scroll to next section"
-              type="button"
+              className={`hero__play-btn ${playing ? 'hero__play-btn--playing' : ''}`}
+              onClick={() => setPlaying(p => !p)}
+              aria-label={playing ? 'Pause video' : 'Play video'}
             >
-              <span className="hero__scroll-track" aria-hidden="true">
-                <span className="hero__scroll-thumb" />
-              </span>
-              <span className="hero__scroll-mouse" aria-hidden="true">
-                <svg width="22" height="32" viewBox="0 0 22 32" fill="none">
-                  <rect x="1" y="1" width="20" height="30" rx="10" stroke="rgba(255,255,255,0.25)" strokeWidth="1.5"/>
-                  <rect className="hero__scroll-wheel" x="9.5" y="7" width="3" height="6" rx="1.5" fill="rgba(255,255,255,0.5)"/>
-                </svg>
-              </span>
-              <span className="hero__scroll-label">Scroll</span>
+              <span className="hero__play-label">{playing ? 'Pause' : 'Play'}</span>
             </button>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="hero__accent" aria-hidden="true" />
-    </section>
+      {/* ── LOGOS STRIP ── */}
+      <div className="logos-strip">
+        <div className="logos-strip__inner">
+          {[
+            { name: 'PAPERZ', sub: 'Leading Paper Company' },
+            { name: 'Dorfus', sub: '' },
+            { name: 'Martino', sub: 'Colors of your life' },
+            { name: 'square', sub: 'Real Estate Solution' },
+            { name: 'Gobona', sub: 'Your Trusted Carrier' },
+          ].map((brand) => (
+            <div key={brand.name} className="logos-strip__item">
+              <span className="logos-strip__name">{brand.name}</span>
+              {brand.sub && <span className="logos-strip__sub">{brand.sub}</span>}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
 
