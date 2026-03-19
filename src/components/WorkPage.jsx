@@ -5,7 +5,7 @@ import ProjectModal from './ProjectModal'
 
 const ALL_PROJECTS = [
   {
-    id: 1, number: '01', title: 'Neon Abyss',
+    id: 1, number: '01', title: 'Brauss Networks',
     category: 'Branding / Identity', year: '2024',
     color: '#FF3C3C',
     description: 'Sistem identitas visual untuk brand streetwear generasi baru yang menggabungkan elemen cyber-punk dan tradisi batik modern.',
@@ -13,7 +13,7 @@ const ALL_PROJECTS = [
     image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=840&h=560&fit=crop&q=80',
   },
   {
-    id: 2, number: '02', title: 'Solara UI',
+    id: 2, number: '02', title: 'KACA Kreative',
     category: 'Product Design', year: '2024',
     color: '#FFB830',
     description: 'Design system komprehensif untuk platform fintech dengan 300+ komponen dan aksesibilitas WCAG AAA.',
@@ -21,7 +21,7 @@ const ALL_PROJECTS = [
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=840&h=560&fit=crop&q=80',
   },
   {
-    id: 3, number: '03', title: 'Archipelago',
+    id: 3, number: '03', title: 'IndobizCorner',
     category: 'Web Experience', year: '2023',
     color: '#00C4AD',
     description: 'Pengalaman web imersif memetakan keanekaragaman hayati kepulauan Indonesia melalui visual data interaktif.',
@@ -29,7 +29,7 @@ const ALL_PROJECTS = [
     image: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=840&h=560&fit=crop&q=80',
   },
   {
-    id: 4, number: '04', title: 'Void Studio',
+    id: 4, number: '04', title: 'BSI Coin',
     category: 'Motion / Film', year: '2023',
     color: '#A855F7',
     description: 'Sequence pembuka sinematik untuk studio animasi independen menggunakan teknik tipografi kinetik.',
@@ -37,7 +37,7 @@ const ALL_PROJECTS = [
     image: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=840&h=560&fit=crop&q=80',
   },
   {
-    id: 5, number: '05', title: 'Kira App',
+    id: 5, number: '05', title: 'Reminder Dashoard IdobizCorner',
     category: 'Mobile UX', year: '2025',
     color: '#22c55e',
     description: 'Aplikasi wellness yang merancang ulang tracking kebiasaan dengan pendekatan berbasis konteks dan AI lokal.',
@@ -45,7 +45,7 @@ const ALL_PROJECTS = [
     image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=840&h=560&fit=crop&q=80',
   },
   {
-    id: 6, number: '06', title: 'Obsidian Mark',
+    id: 6, number: '06', title: 'SaromaseCo',
     category: 'Branding / Identity', year: '2023',
     color: '#FF3C3C',
     description: 'Rebranding menyeluruh untuk label rekaman indie — dari wordmark hingga sistem packaging vinyl.',
@@ -53,7 +53,7 @@ const ALL_PROJECTS = [
     image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=840&h=560&fit=crop&q=80',
   },
   {
-    id: 7, number: '07', title: 'Fauna Atlas',
+    id: 7, number: '07', title: 'Viaje Website',
     category: 'Web Experience', year: '2022',
     color: '#00C4AD',
     description: 'Platform digital interaktif untuk dokumentasi fauna endemik Nusantara dengan visualisasi data spasial.',
@@ -61,7 +61,7 @@ const ALL_PROJECTS = [
     image: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=840&h=560&fit=crop&q=80',
   },
   {
-    id: 8, number: '08', title: 'Pasar Typeset',
+    id: 8, number: '08', title: 'Merantau.com',
     category: 'Type Design', year: '2022',
     color: '#FFB830',
     description: 'Keluarga tipografi display terinspirasi huruf kayu pasar tradisional — tersedia dalam 6 weight.',
@@ -69,7 +69,7 @@ const ALL_PROJECTS = [
     image: 'https://images.unsplash.com/photo-1563089145-599997674d42?w=840&h=560&fit=crop&q=80',
   },
   {
-    id: 9, number: '09', title: 'Helios Dashboard',
+    id: 9, number: '09', title: 'PilarTrust',
     category: 'Product Design', year: '2025',
     color: '#FFB830',
     description: 'Dashboard analytics real-time untuk platform energi terbarukan — dark mode-first dengan 80+ komponen.',
