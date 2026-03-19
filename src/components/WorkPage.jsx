@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import '../styles/WorkPage.css'
+import ProjectModal from './ProjectModal'
 
 const ALL_PROJECTS = [
   {
@@ -88,8 +89,9 @@ function getCount(f) {
 }
 
 export default function WorkPage() {
-  const [filter,  setFilter]  = useState('All')
-  const [mounted, setMounted] = useState(false)
+  const [filter,     setFilter]     = useState('All')
+  const [mounted,    setMounted]    = useState(false)
+  const [activeProj, setActiveProj] = useState(null)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -104,133 +106,144 @@ export default function WorkPage() {
         p.tag.toLowerCase().includes(filter.toLowerCase())
       )
 
+  const openModal  = useCallback((proj) => setActiveProj(proj), [])
+  const closeModal = useCallback(() => setActiveProj(null), [])
+
   return (
-    <div className={`wk${mounted ? ' wk--in' : ''}`}>
+    <>
+      <div className={`wk${mounted ? ' wk--in' : ''}`}>
 
-      {/* ── HERO ── */}
-      <header className="wk__hero">
-        <Link to="/" className="wk__back">
-          <svg width="13" height="13" viewBox="0 0 20 20" fill="none">
-            <path d="M16 4L4 16M4 16h9M4 16V7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          Back
-        </Link>
+        {/* ── HERO ── */}
+        <header className="wk__hero">
+          <Link to="/" className="wk__back">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="none">
+              <path d="M16 4L4 16M4 16h9M4 16V7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            Back
+          </Link>
 
-        <div className="wk__hero-inner">
-          <div className="wk__hero-left">
-            <p className="wk__eyebrow">
-              <span className="wk__eyebrow-dot" />
-              LXY Creative Studio
-            </p>
-            <h1 className="wk__hero-title">
-              Selected<br /><em>Work</em>
-            </h1>
-          </div>
-
-          <div className="wk__hero-right">
-            <p className="wk__hero-desc">
-              A curated collection of identity systems, digital experiences,
-              and motion work — built with intent, delivered with precision.
-            </p>
-            <div className="wk__hero-meta">
-              <span className="wk__hero-meta-item">
-                <span className="wk__hero-meta-num">{ALL_PROJECTS.length}</span>
-                Projects
-              </span>
-              <span className="wk__hero-meta-sep" />
-              <span className="wk__hero-meta-item">
-                <span className="wk__hero-meta-num">2019</span>
-                — Present
-              </span>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* ── FILTER BAR — sticky ── */}
-      <div className="wk__filter-bar">
-        <div className="wk__filter-label">Filter</div>
-        <div className="wk__filters">
-          {FILTERS.map(f => (
-            <button
-              key={f}
-              className={`wk__filter-btn${filter === f ? ' wk__filter-btn--active' : ''}`}
-              onClick={() => setFilter(f)}
-            >
-              {f}
-              {f !== 'All' && (
-                <span className="wk__filter-count">{getCount(f)}</span>
-              )}
-            </button>
-          ))}
-        </div>
-        <div className="wk__filter-total">
-          {filtered.length} result{filtered.length !== 1 ? 's' : ''}
-        </div>
-      </div>
-
-      {/* ── GRID ── */}
-      <main className="wk__grid">
-        {filtered.map((proj, i) => (
-          <article
-            key={proj.id}
-            className="wk__card"
-            style={{
-              '--cc':      proj.color,
-              '--cc-dim':  proj.color + '22',
-              animationDelay: `${i * 0.05}s`,
-            }}
-          >
-            <div className="wk__card-glow" />
-
-            {/* Image */}
-            <div className="wk__card-img-wrap">
-              <img
-                className="wk__card-img"
-                src={proj.image}
-                alt={proj.title}
-                loading="lazy"
-                draggable="false"
-              />
-              <div className="wk__card-img-tint" />
-              <span className="wk__card-num">{proj.number}</span>
-              <span className="wk__card-tag">{proj.tag}</span>
+          <div className="wk__hero-inner">
+            <div className="wk__hero-left">
+              <p className="wk__eyebrow">
+                <span className="wk__eyebrow-dot" />
+                LXY Creative Studio
+              </p>
+              <h1 className="wk__hero-title">
+                Selected<br /><em>Work</em>
+              </h1>
             </div>
 
-            {/* Content */}
-            <div className="wk__card-body">
-              <div>
-                <h2 className="wk__card-title">{proj.title}</h2>
-                <p  className="wk__card-cat">{proj.category}</p>
-                <p  className="wk__card-desc">{proj.description}</p>
+            <div className="wk__hero-right">
+              <p className="wk__hero-desc">
+                A curated collection of identity systems, digital experiences,
+                and motion work — built with intent, delivered with precision.
+              </p>
+              <div className="wk__hero-meta">
+                <span className="wk__hero-meta-item">
+                  <span className="wk__hero-meta-num">{ALL_PROJECTS.length}</span>
+                  Projects
+                </span>
+                <span className="wk__hero-meta-sep" />
+                <span className="wk__hero-meta-item">
+                  <span className="wk__hero-meta-num">2019</span>
+                  — Present
+                </span>
               </div>
-              <div className="wk__card-foot">
-                <span className="wk__card-year">{proj.year}</span>
-                <div className="wk__card-arrow">
-                  <svg width="12" height="12" viewBox="0 0 20 20" fill="none">
-                    <path d="M4 16L16 4M16 4H7M16 4v9" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+            </div>
+          </div>
+        </header>
+
+        {/* ── FILTER BAR ── */}
+        <div className="wk__filter-bar">
+          <div className="wk__filter-label">Filter</div>
+          <div className="wk__filters">
+            {FILTERS.map(f => (
+              <button
+                key={f}
+                className={`wk__filter-btn${filter === f ? ' wk__filter-btn--active' : ''}`}
+                onClick={() => setFilter(f)}
+              >
+                {f}
+                {f !== 'All' && (
+                  <span className="wk__filter-count">{getCount(f)}</span>
+                )}
+              </button>
+            ))}
+          </div>
+          <div className="wk__filter-total">
+            {filtered.length} result{filtered.length !== 1 ? 's' : ''}
+          </div>
+        </div>
+
+        {/* ── GRID ── */}
+        <main className="wk__grid">
+          {filtered.map((proj, i) => (
+            <article
+              key={proj.id}
+              className="wk__card"
+              style={{
+                '--cc':     proj.color,
+                '--cc-dim': proj.color + '22',
+                animationDelay: `${i * 0.05}s`,
+              }}
+              onClick={() => openModal(proj)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === 'Enter' && openModal(proj)}
+              aria-label={`View ${proj.title} project detail`}
+            >
+              <div className="wk__card-glow" />
+
+              <div className="wk__card-img-wrap">
+                <img
+                  className="wk__card-img"
+                  src={proj.image}
+                  alt={proj.title}
+                  loading="lazy"
+                  draggable="false"
+                />
+                <div className="wk__card-img-tint" />
+                <span className="wk__card-num">{proj.number}</span>
+                <span className="wk__card-tag">{proj.tag}</span>
+              </div>
+
+              <div className="wk__card-body">
+                <div>
+                  <h2 className="wk__card-title">{proj.title}</h2>
+                  <p  className="wk__card-cat">{proj.category}</p>
+                  <p  className="wk__card-desc">{proj.description}</p>
+                </div>
+                <div className="wk__card-foot">
+                  <span className="wk__card-year">{proj.year}</span>
+                  <div className="wk__card-arrow">
+                    <svg width="12" height="12" viewBox="0 0 20 20" fill="none">
+                      <path d="M4 16L16 4M16 4H7M16 4v9" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
                 </div>
               </div>
-            </div>
-          </article>
-        ))}
-      </main>
+            </article>
+          ))}
+        </main>
 
-      {/* ── BOTTOM CTA ── */}
-      <section className="wk__bottom-cta">
-        <p className="wk__bottom-eyebrow">Have a project in mind?</p>
-        <h2 className="wk__bottom-title">
-          Let's build something<br /><em>together.</em>
-        </h2>
-        <Link to="/" className="wk__bottom-btn">
-          Start a conversation
-          <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-            <path d="M4 16L16 4M16 4H7M16 4v9" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </Link>
-      </section>
+        {/* ── BOTTOM CTA ── */}
+        <section className="wk__bottom-cta">
+          <p className="wk__bottom-eyebrow">Have a project in mind?</p>
+          <h2 className="wk__bottom-title">
+            Let's build something<br /><em>together.</em>
+          </h2>
+          <Link to="/contact" className="wk__bottom-btn">
+            Start a conversation
+            <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+              <path d="M4 16L16 4M16 4H7M16 4v9" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </Link>
+        </section>
 
-    </div>
+      </div>
+
+      {/* Modal — outside main so no stacking context issues */}
+      <ProjectModal project={activeProj} onClose={closeModal} />
+    </>
   )
 }

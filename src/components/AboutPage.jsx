@@ -305,7 +305,7 @@ export default function AboutPage() {
                 <path d="M4 16L16 4M16 4H7M16 4v9" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </a>
-            <Link to="/work" className="abt__bottom-link">
+            <Link to="/projects" className="abt__bottom-link">
               See our work ↗
             </Link>
           </div>

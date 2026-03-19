@@ -433,20 +433,32 @@
 
 
 /* ════════════════════════════════
-   BOTTOM CTA
+   BOTTOM CTA  —  dark zone
 ════════════════════════════════ */
 .wk__bottom-cta {
   padding: 120px var(--pad-x);
-  border-bottom: 1px solid var(--line);
   position: relative;
-  background: var(--bg);
+  overflow: hidden;
+
+  /* Dark theme */
+  background: #080808;
+  border-top: none;
+  border-bottom: none;
+}
+
+/* Ambient glow */
+.wk__bottom-cta::before {
+  content: '';
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 55% 70% at 0% 100%, rgba(255,60,60,.05), transparent 55%);
 }
 
 .wk__bottom-eyebrow {
   font-size: 10px;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--mid);
+  color: #333;           /* muted on dark */
   margin-bottom: 24px;
 }
 
@@ -456,7 +468,7 @@
   font-weight: 800;
   line-height: 0.9;
   letter-spacing: -0.04em;
-  color: var(--ink);
+  color: #f0ece4;        /* light on dark */
   margin: 0 0 48px;
 }
 

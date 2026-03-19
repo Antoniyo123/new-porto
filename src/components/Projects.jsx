@@ -133,7 +133,7 @@ export default function HorizontalProjects() {
 
           <div className="hp__top-row">
             <div className="hp__title-block">
-              <p className="hp__title-label">Selected Work — 2019–2025</p>
+
               <h2 className="hp__title-main">Our<br /><em>Projects</em></h2>
             </div>
             <div className="hp__counter-block">

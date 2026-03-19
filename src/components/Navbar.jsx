@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import '../styles/Navbar.css';
 
-// type: 'scroll' = anchor on home page, 'page' = navigates to a route
 const LINKS = [
-  { href: '#projects', label: 'Project',  type: 'scroll' },
-  { href: '/about',    label: 'About',    type: 'page'   },
-  { href: '#services', label: 'Service',  type: 'scroll' },
+  { href: '/projects', label: 'Project', type: 'page'   },
+  { href: '/about',    label: 'About',   type: 'page'   },
+  { href: '#services', label: 'Service', type: 'scroll' },
 ];
+
+// Which routes get the dark navbar
+const DARK_ROUTES = [ '/about', '/contact'];
 
 const Navbar = () => {
   const [scrolled,  setScrolled]  = useState(false);
@@ -18,6 +20,9 @@ const Navbar = () => {
   const location = useLocation();
   const navigate  = useNavigate();
 
+  const isDark = DARK_ROUTES.includes(location.pathname);
+  const isContact = location.pathname === '/contact';
+
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 80);
     return () => clearTimeout(t);
@@ -26,31 +31,33 @@ const Navbar = () => {
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', fn, { passive: true });
+    fn(); // run on mount so state is correct immediately
     return () => window.removeEventListener('scroll', fn);
   }, []);
+
+  // Reset scroll state on route change
+  useEffect(() => { setScrolled(false); }, [location.pathname]);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [menuOpen]);
 
-  // Highlight About when on /about route
   useEffect(() => {
     const idx = LINKS.findIndex(l => l.href === location.pathname);
     if (idx !== -1) setActiveIdx(idx);
+    else if (location.pathname === '/') setActiveIdx(null);
   }, [location.pathname]);
 
-  /* Handle scroll links:
-     - If already on home ('/') → scroll directly
-     - If on another page → navigate home first, then scroll after mount */
+  // Close drawer on route change
+  useEffect(() => { setMenuOpen(false); }, [location.pathname]);
+
   const handleScrollLink = (e, href) => {
     e.preventDefault();
     const id = href.replace('#', '');
-
     if (location.pathname === '/') {
       document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
     } else {
-      // Go home, then scroll once page has loaded
       navigate('/');
       setTimeout(() => {
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -60,21 +67,16 @@ const Navbar = () => {
 
   const cls = [
     'navbar',
-    scrolled && 'navbar--scrolled',
-    mounted  && 'navbar--in',
-    menuOpen && 'navbar--open',
+    isDark     && 'navbar--dark',
+    scrolled   && 'navbar--scrolled',
+    mounted    && 'navbar--in',
+    menuOpen   && 'navbar--open',
   ].filter(Boolean).join(' ');
 
-  // Render a nav item — Link for pages, <a> for scroll anchors
   const NavItem = ({ link, index, className, onClick, children }) => {
     if (link.type === 'page') {
       return (
-        <Link
-          to={link.href}
-          className={className}
-          style={{ '--i': index }}
-          onClick={onClick}
-        >
+        <Link to={link.href} className={className} style={{ '--i': index }} onClick={onClick}>
           {children}
         </Link>
       );
@@ -84,10 +86,7 @@ const Navbar = () => {
         href={link.href}
         className={className}
         style={{ '--i': index }}
-        onClick={(e) => {
-          handleScrollLink(e, link.href);
-          onClick?.();
-        }}
+        onClick={(e) => { handleScrollLink(e, link.href); onClick?.(); }}
       >
         {children}
       </a>
@@ -99,12 +98,10 @@ const Navbar = () => {
       <header className={cls}>
         <div className="navbar__inner">
 
-          {/* ── Logo ── */}
           <Link to="/" className="navbar__logo" aria-label="Home">
             LXY
           </Link>
 
-          {/* ── Desktop nav ── */}
           <nav className="navbar__nav" aria-label="Main navigation">
             {LINKS.map((l, i) => (
               <NavItem
@@ -119,12 +116,14 @@ const Navbar = () => {
             ))}
           </nav>
 
-          {/* ── Right ── */}
           <div className="navbar__right">
-            <a href="mailto:hello@lxy.co" className="navbar__cta">
+            <Link
+              to="/contact"
+              className={`navbar__cta${isContact ? ' navbar__cta--active' : ''}`}
+            >
               Contact
               <span className="navbar__cta-arrow" aria-hidden="true">→</span>
-            </a>
+            </Link>
 
             <button
               className="navbar__burger"
@@ -140,9 +139,9 @@ const Navbar = () => {
         </div>
       </header>
 
-      {/* ── Mobile drawer ── */}
+      {/* Mobile drawer — theme follows navbar */}
       <div
-        className={`navbar__drawer${menuOpen ? ' navbar__drawer--open' : ''}`}
+        className={`navbar__drawer${menuOpen ? ' navbar__drawer--open' : ''}${isDark ? ' navbar__drawer--dark' : ''}`}
         aria-hidden={!menuOpen}
         role="dialog"
         aria-label="Navigation menu"
@@ -163,6 +162,16 @@ const Navbar = () => {
               <span className="navbar__drawer-arrow">↗</span>
             </NavItem>
           ))}
+
+          <Link
+            to="/contact"
+            className="navbar__drawer-link"
+            onClick={() => setMenuOpen(false)}
+          >
+            <span className="navbar__drawer-no">0{LINKS.length + 1}</span>
+            <span className="navbar__drawer-label">Contact</span>
+            <span className="navbar__drawer-arrow">↗</span>
+          </Link>
         </nav>
 
         <div className="navbar__drawer-foot">
