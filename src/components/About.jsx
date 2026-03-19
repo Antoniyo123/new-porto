@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react'
 import '../styles/About.css'
+import profilImg from "../assets/profil.jpg";
 
 const STATS = [
   { num: '5+',  label: 'Years of craft'   },
@@ -42,14 +43,13 @@ const About = () => {
 
         {/* Photo */}
         <div className="ab__photo-wrap">
-
-          <img
-            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=85&auto=format&fit=crop&crop=faces"
-            alt="Studio founder"
-            className="ab__photo"
-            loading="lazy"
-          />
-        </div>
+  <img
+    src={profilImg}
+    alt="Studio founder"
+    className="ab__photo"
+    loading="lazy"
+  />
+</div>
 
         {/* Content */}
         <div className="ab__content">
