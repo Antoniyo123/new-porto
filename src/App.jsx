@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import './App.css'
 import './styles/global.css'
 import Preloader from './components/Preloader'
 import Navbar    from './components/Navbar'
@@ -15,16 +16,15 @@ function App() {
     <div className="App">
       <Preloader onComplete={() => setLoaded(true)} />
 
-      {loaded && (
-        <>
-          <Navbar />
-          <Hero />
-          <About />
-          <Services />
-          <Projects />
-          <Footer />
-        </>
-      )}
+      {/* ✅ Selalu render, bukan conditional */}
+      <div style={{ visibility: loaded ? 'visible' : 'hidden' }}>
+        <Navbar />
+        <Hero />
+        <About />
+        <Services />
+        <Projects />
+        <Footer />
+      </div>
     </div>
   )
 }

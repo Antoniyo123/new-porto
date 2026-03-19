@@ -9,7 +9,8 @@
 .App {
   position: relative;
   width: 100%;
-  overflow-x: hidden;
+  /* clip-path tidak mempengaruhi sticky, overflow: hidden mempengaruhi */
+  clip-path: inset(0);
 }
 
 /* ── Section rhythm ── */

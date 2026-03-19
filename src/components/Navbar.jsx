@@ -12,7 +12,7 @@ const Navbar = () => {
   const [scrolled,  setScrolled]  = useState(false);
   const [menuOpen,  setMenuOpen]  = useState(false);
   const [mounted,   setMounted]   = useState(false);
-  const [activeIdx, setActiveIdx] = useState(0);
+  const [activeIdx, setActiveIdx] = useState(null);
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 80);
@@ -32,9 +32,9 @@ const Navbar = () => {
 
   const cls = [
     'navbar',
-    scrolled  && 'navbar--scrolled',
-    mounted   && 'navbar--in',
-    menuOpen  && 'navbar--open',
+    scrolled && 'navbar--scrolled',
+    mounted  && 'navbar--in',
+    menuOpen && 'navbar--open',
   ].filter(Boolean).join(' ');
 
   return (
@@ -44,24 +44,16 @@ const Navbar = () => {
 
           {/* ── Logo ── */}
           <a href="/" className="navbar__logo" aria-label="Home">
-            <span className="navbar__logo-icon" aria-hidden="true">
-              {/* waveform bars */}
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                <rect x="1"  y="10" width="3.5" height="8"  rx="1.75" fill="currentColor"/>
-                <rect x="7"  y="6"  width="3.5" height="16" rx="1.75" fill="currentColor"/>
-                <rect x="13" y="9"  width="3.5" height="10" rx="1.75" fill="currentColor"/>
-                <rect x="19" y="4"  width="3.5" height="20" rx="1.75" fill="currentColor"/>
-              </svg>
-            </span>
+            LXY
           </a>
 
-          {/* ── Desktop nav — centred ── */}
+          {/* ── Desktop nav ── */}
           <nav className="navbar__nav" aria-label="Main navigation">
             {LINKS.map((l, i) => (
               <a
                 key={l.href}
                 href={l.href}
-                className={`navbar__link ${activeIdx === i ? 'navbar__link--active' : ''}`}
+                className={`navbar__link${activeIdx === i ? ' navbar__link--active' : ''}`}
                 style={{ '--i': i }}
                 onClick={() => setActiveIdx(i)}
               >
@@ -70,11 +62,11 @@ const Navbar = () => {
             ))}
           </nav>
 
-          {/* ── Right: CTA + burger ── */}
+          {/* ── Right ── */}
           <div className="navbar__right">
             <a href="mailto:hello@lxy.co" className="navbar__cta">
               Contact
-              <span className="navbar__cta-arrow" aria-hidden="true">→</span>
+              <span className="navbar__cta-arrow" aria-hidden>→</span>
             </a>
 
             <button
@@ -93,11 +85,14 @@ const Navbar = () => {
 
       {/* ── Mobile drawer ── */}
       <div
-        className={`navbar__drawer ${menuOpen ? 'navbar__drawer--open' : ''}`}
+        className={`navbar__drawer${menuOpen ? ' navbar__drawer--open' : ''}`}
         aria-hidden={!menuOpen}
         role="dialog"
         aria-label="Navigation menu"
       >
+        {/* drawer close overlay */}
+        <div className="navbar__drawer-overlay" onClick={() => setMenuOpen(false)} />
+
         <nav className="navbar__drawer-nav">
           {LINKS.map((l, i) => (
             <a
@@ -108,12 +103,16 @@ const Navbar = () => {
               onClick={() => { setMenuOpen(false); setActiveIdx(i); }}
             >
               <span className="navbar__drawer-no">0{i + 1}</span>
-              {l.label}
+              <span className="navbar__drawer-label">{l.label}</span>
+              <span className="navbar__drawer-arrow">↗</span>
             </a>
           ))}
         </nav>
+
         <div className="navbar__drawer-foot">
-          <a href="mailto:hello@lxy.co" className="navbar__drawer-email">hello@lxy.co</a>
+          <a href="mailto:hello@lxy.co" className="navbar__drawer-email">
+            hello@lxy.co
+          </a>
           <span className="navbar__drawer-loc">Jakarta, Indonesia</span>
         </div>
       </div>

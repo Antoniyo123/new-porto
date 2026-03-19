@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/Hero.css';
+
+const BRANDS = ['PAPERZ', 'Dorfus', 'Martino', 'square', 'Gobona'];
 
 const Hero = () => {
   const [mounted, setMounted] = useState(false);
-  const [playing, setPlaying] = useState(false);
-  const heroRef = useRef(null);
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 60);
@@ -12,96 +12,126 @@ const Hero = () => {
   }, []);
 
   return (
-    <div className={`page-wrapper ${mounted ? 'page--in' : ''}`}>
-      {/* ── NAV ── */}
-      <nav className="nav">
-        <div className="nav__logo">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-            <rect x="2" y="8" width="3" height="16" rx="1.5" fill="#111"/>
-            <rect x="8" y="4" width="3" height="24" rx="1.5" fill="#111"/>
-            <rect x="14" y="10" width="3" height="12" rx="1.5" fill="#111"/>
-            <rect x="20" y="6" width="3" height="20" rx="1.5" fill="#111"/>
-          </svg>
-        </div>
-        <ul className="nav__links">
-          <li><a href="#projects" className="nav__link nav__link--active">Project</a></li>
-          <li><a href="#about" className="nav__link">About</a></li>
-          <li><a href="#service" className="nav__link">Service</a></li>
-          <li><a href="#career" className="nav__link">Career</a></li>
-        </ul>
-        <a href="#contact" className="nav__cta">
-          Contact <span className="nav__cta-arrow">→</span>
-        </a>
-      </nav>
+    <div className={`hr-root${mounted ? ' hr-root--in' : ''}`}>
+      <section className="hr">
 
-      {/* ── HERO SECTION ── */}
-      <section className="hero" ref={heroRef} aria-label="Hero">
+        {/* ── LEFT — text ── */}
+        <div className="hr__left">
 
-        {/* Scroll indicator — left side */}
-        <div className="hero__scroll-indicator" aria-hidden="true">
-          <span className="hero__scroll-text">Scroll Down</span>
-          <div className="hero__scroll-line">
-            <span className="hero__scroll-dot" />
+          <div className="hr__headline-block">
+            <h1 className="hr__headline">
+              <span className="hr__hl hr__hl--1">WE</span>
+              <span className="hr__hl hr__hl--2">
+                COM<span className="hr__hl-red">PLETE</span>
+              </span>
+              <span className="hr__hl hr__hl--3">YOUR</span>
+              <span className="hr__hl hr__hl--4">
+                <span className="hr__hl-outline">CREATIVE</span>
+              </span>
+              <span className="hr__hl hr__hl--5">IDEAS</span>
+            </h1>
           </div>
-        </div>
 
-        {/* ── Headline block ── */}
-        <div className="hero__content">
-          <div className="hero__headline-block">
-            <div className="hero__headline-row hero__headline-row--1">
-              <h1 className="hero__headline">WE COMPLETE</h1>
-              <a href="#contact" className="hero__talk-btn" aria-label="Let's talk now">
-                <span className="hero__talk-circle">
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M4 10h12M12 5l5 5-5 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </span>
-                <span className="hero__talk-label">LET'S TALK NOW</span>
+          {/*
+            ── MOBILE IMAGE BLOCK ──
+            Shown only on ≤ 900px via CSS (display: none on desktop).
+            Sits between headline and bottom copy so the layout reads:
+            Headline → Image → Tagline + CTA
+          */}
+          <div className="hr__mobile-img">
+            <img
+              src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=900&q=85&auto=format&fit=crop&crop=center"
+              alt="Design work"
+              className="hr__img"
+              loading="eager"
+            />
+            <div className="hr__img-overlay" />
+            <div className="hr__img-tag">
+              <span className="hr__img-tag-no">001</span>
+              <span className="hr__img-tag-name">Brand Identity</span>
+            </div>
+
+            {/* floating secondary — inside mobile img block */}
+            <div className="hr__mobile-img-float">
+              <img
+                src="https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=600&q=85&auto=format&fit=crop&crop=center"
+                alt="Product design"
+                className="hr__img"
+                loading="lazy"
+              />
+              <div className="hr__img-overlay" />
+            </div>
+
+            {/* cross deco */}
+            <div className="hr__mobile-cross" aria-hidden="true">
+              <span /><span />
+            </div>
+          </div>
+
+          <div className="hr__bottom">
+            <p className="hr__tagline">
+              Oasic is a visionary design agency that breathes
+              life into ideas and transforms them into
+              extraordinary realities.
+            </p>
+            <div className="hr__actions">
+              <a href="#contact" className="hr__cta-primary">
+                Let's talk
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+                  <path
+                    d="M4 16L16 4M16 4H7M16 4v9"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </a>
-            </div>
-            <div className="hero__headline-row hero__headline-row--2">
-              <h1 className="hero__headline hero__headline--indent">YOUR CREATIVE IDEAS</h1>
+              <a href="#projects" className="hr__cta-secondary">See work</a>
             </div>
           </div>
 
-          {/* Tagline */}
-          <p className="hero__tagline">
-            Oasic is a visionary design agency that breathes life into<br />
-            ideas and transforms them into extraordinary realities.
-          </p>
         </div>
 
-        {/* ── Video / Media block ── */}
-        <div className="hero__media">
-          <div className="hero__media-inner">
-            {/* Decorative orb */}
-            <div className="hero__orb" aria-hidden="true" />
-            {/* Play button overlay */}
-            <button
-              className={`hero__play-btn ${playing ? 'hero__play-btn--playing' : ''}`}
-              onClick={() => setPlaying(p => !p)}
-              aria-label={playing ? 'Pause video' : 'Play video'}
-            >
-              <span className="hero__play-label">{playing ? 'Pause' : 'Play'}</span>
-            </button>
+        {/* ── RIGHT — desktop images only ── */}
+        <div className="hr__right">
+          <div className="hr__img-main">
+            <img
+              src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=900&q=85&auto=format&fit=crop&crop=center"
+              alt="Design work"
+              className="hr__img"
+              loading="eager"
+            />
+            <div className="hr__img-overlay" />
+            <div className="hr__img-tag">
+              <span className="hr__img-tag-no">001</span>
+              <span className="hr__img-tag-name">Brand Identity</span>
+            </div>
+          </div>
+
+          <div className="hr__img-float">
+            <img
+              src="https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=600&q=85&auto=format&fit=crop&crop=center"
+              alt="Product design"
+              className="hr__img"
+              loading="lazy"
+            />
+            <div className="hr__img-overlay" />
+          </div>
+
+          <div className="hr__cross" aria-hidden="true">
+            <span /><span />
           </div>
         </div>
+
       </section>
 
       {/* ── LOGOS STRIP ── */}
-      <div className="logos-strip">
-        <div className="logos-strip__inner">
-          {[
-            { name: 'PAPERZ', sub: 'Leading Paper Company' },
-            { name: 'Dorfus', sub: '' },
-            { name: 'Martino', sub: 'Colors of your life' },
-            { name: 'square', sub: 'Real Estate Solution' },
-            { name: 'Gobona', sub: 'Your Trusted Carrier' },
-          ].map((brand) => (
-            <div key={brand.name} className="logos-strip__item">
-              <span className="logos-strip__name">{brand.name}</span>
-              {brand.sub && <span className="logos-strip__sub">{brand.sub}</span>}
-            </div>
+      <div className="hr__logos">
+        <span className="hr__logos-label">Trusted by</span>
+        <div className="hr__logos-track">
+          {BRANDS.map(b => (
+            <span key={b} className="hr__logos-item">{b}</span>
           ))}
         </div>
       </div>

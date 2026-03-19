@@ -1,80 +1,89 @@
-import React, { useRef, useEffect, useState } from 'react';
-import '../styles/About.css';
+import { useRef, useEffect, useState } from 'react'
+import '../styles/About.css'
 
 const STATS = [
   { num: '5+',  label: 'Years of craft'   },
   { num: '80+', label: 'Projects shipped' },
   { num: '3',   label: 'Design awards'    },
-];
+]
 
 const About = () => {
-  const [visible, setVisible] = useState(false);
-  const ref = useRef(null);
+  const [visible, setVisible] = useState(false)
+  const ref = useRef(null)
 
   useEffect(() => {
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setVisible(true); },
+      ([e]) => { if (e.isIntersecting) setVisible(true) },
       { threshold: 0.04 }
-    );
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, []);
+    )
+    if (ref.current) obs.observe(ref.current)
+    return () => obs.disconnect()
+  }, [])
 
   return (
     <section
-      className={`about${visible ? ' about--in' : ''}`}
       id="about"
       ref={ref}
+      className={`ab__section${visible ? ' ab__section--in' : ''}`}
     >
+
       {/* ── Eyebrow ── */}
-      <div className="about__eyebrow">// ABOUT US</div>
+      <p className="ab__eyebrow">// About us</p>
 
       {/* ── Headline ── */}
-      <h2 className="about__headline">WE ARE A CREATIVE STUDIO</h2>
+      <h2 className="ab__headline">
+        We are a<br />
+        <em>creative</em>{' '}
+        <span className="ab__outline">studio</span>
+      </h2>
 
-      {/* ── Main grid: photo left, content right ── */}
-      <div className="about__grid">
+      {/* ── Grid ── */}
+      <div className="ab__grid">
 
-        <div className="about__photo-col">
+        {/* Photo */}
+        <div className="ab__photo-wrap">
+
           <img
             src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=85&auto=format&fit=crop&crop=faces"
             alt="Studio founder"
-            className="about__photo"
+            className="ab__photo"
             loading="lazy"
           />
         </div>
 
-        <div className="about__content">
+        {/* Content */}
+        <div className="ab__content">
 
-          <p className="about__body">
+          <p className="ab__body">
             LXY Creative is a Jakarta-based studio founded in 2020. From
             early-stage startups to established companies, we partner with
-            clients who care deeply about the details. We don't just make
-            things look good — we make them work beautifully.
+            clients who care deeply about the details.{' '}
+            <strong>
+              We don't just make things look good — we make them work beautifully.
+            </strong>
           </p>
 
-          {/* Stats inline */}
-          <div className="about__stats">
+          {/* Stats */}
+          <div className="ab__stats">
             {STATS.map(s => (
-              <div key={s.label} className="about__stat">
-                <span className="about__stat-num">{s.num}</span>
-                <span className="about__stat-lbl">{s.label}</span>
+              <div key={s.label} className="ab__stat">
+                <span className="ab__stat-num">{s.num}</span>
+                <span className="ab__stat-lbl">{s.label}</span>
               </div>
             ))}
           </div>
 
-          <a href="mailto:hello@lxy.co" className="about__cta">
+          {/* CTA */}
+          <a href="mailto:hello@lxy.co" className="ab__cta">
             Start a project
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-              <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+            <span className="ab__cta-arrow">↗</span>
           </a>
 
         </div>
       </div>
 
     </section>
-  );
-};
+  )
+}
 
-export default About;
+export default About

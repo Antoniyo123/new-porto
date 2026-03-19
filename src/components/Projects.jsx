@@ -1,165 +1,270 @@
-import React, { useRef, useEffect, useState } from 'react';
-import '../styles/Projects.css';
+import { useEffect, useRef, useState, useCallback } from 'react'
+import '../styles/Projects.css'
 
 const projects = [
   {
-    no: '01', title: 'Verdant', category: 'Branding · Web', year: '2025',
-    img: 'https://images.unsplash.com/photo-1634942537034-2531766767d1?w=900&q=85&auto=format&fit=crop',
+    id: 1, number: '01', title: 'Neon Abyss',
+    category: 'Branding / Identity', year: '2024',
+    color: '#FF3C3C', bg: '#0d0808',
+    description: 'Sistem identitas visual untuk brand streetwear generasi baru yang menggabungkan elemen cyber-punk dan tradisi batik modern.',
+    tag: 'Featured',
+    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=840&h=400&fit=crop&q=80',
   },
   {
-    no: '02', title: 'Forma', category: 'UI/UX · Design', year: '2025',
-    img: 'https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=900&q=85&auto=format&fit=crop',
+    id: 2, number: '02', title: 'Solara UI',
+    category: 'Product Design', year: '2024',
+    color: '#FFB830', bg: '#0d0b06',
+    description: 'Design system komprehensif untuk platform fintech dengan 300+ komponen dan aksesibilitas WCAG AAA.',
+    tag: 'Award',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=840&h=400&fit=crop&q=80',
   },
   {
-    no: '03', title: 'Kōdo', category: 'Identity · Motion', year: '2024',
-    img: 'https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?w=900&q=85&auto=format&fit=crop',
+    id: 3, number: '03', title: 'Archipelago',
+    category: 'Web Experience', year: '2023',
+    color: '#00E5CC', bg: '#060d0b',
+    description: 'Pengalaman web imersif memetakan keanekaragaman hayati kepulauan Indonesia melalui visual data interaktif.',
+    tag: 'Interactive',
+    image: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=840&h=400&fit=crop&q=80',
   },
   {
-    no: '04', title: 'Solus', category: 'Web · Dev', year: '2024',
-    img: 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=900&q=85&auto=format&fit=crop',
+    id: 4, number: '04', title: 'Void Studio',
+    category: 'Motion / Film', year: '2023',
+    color: '#A855F7', bg: '#09070d',
+    description: 'Sequence pembuka sinematik untuk studio animasi independen menggunakan teknik tipografi kinetik.',
+    tag: 'Motion',
+    image: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=840&h=400&fit=crop&q=80',
   },
   {
-    no: '05', title: 'Nomi', category: 'Brand · Identity', year: '2024',
-    img: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=900&q=85&auto=format&fit=crop',
+    id: 5, number: '05', title: 'Kira App',
+    category: 'Mobile UX', year: '2025',
+    color: '#4ADE80', bg: '#070d08',
+    description: 'Aplikasi wellness yang merancang ulang tracking kebiasaan dengan pendekatan berbasis konteks dan AI lokal.',
+    tag: 'Launch',
+    image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=840&h=400&fit=crop&q=80',
   },
-];
+]
 
-const Projects = () => {
-  const [visible, setVisible] = useState(false);
-  const [active, setActive]   = useState(1);
-  const sectionRef  = useRef(null);
-  const galleryRef  = useRef(null);
-  const cardRefs    = useRef([]);
+const aboutItems = [
+  { label: 'Services', value: 'Branding · Motion · Digital' },
+  { label: 'Clients',  value: '50+ Global Brands' },
+  { label: 'Founded',  value: 'Jakarta, 2019' },
+]
 
-  /* ── Intersection reveal ── */
+const CARD_W      = 420
+const CARD_GAP    = 32
+const TOTAL_SLIDE = (CARD_W + CARD_GAP) * projects.length
+
+const FADE_IN_END    = 0.07
+const FADE_OUT_START = 0.90
+
+function easeInOut(t) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+}
+
+function norm(val, a, b) {
+  return Math.min(Math.max((val - a) / (b - a), 0), 1)
+}
+
+export default function HorizontalProjects() {
+  const spacerRef = useRef(null)
+
+  const [panelOpacity,  setPanelOpacity]  = useState(0)
+  const [panelTransY,   setPanelTransY]   = useState(20)
+  const [translateX,    setTranslateX]    = useState(0)
+  const [barWidth,      setBarWidth]      = useState(0)
+  const [activeIdx,     setActiveIdx]     = useState(0)
+  const [isActive,      setIsActive]      = useState(false)
+  const [nextVisible,   setNextVisible]   = useState(false)
+  const [spacerH,       setSpacerH]       = useState(5000)
+  const [cardP,         setCardP]         = useState(0)
+
   useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setVisible(true); },
-      { threshold: 0.04 }
-    );
-    if (sectionRef.current) obs.observe(sectionRef.current);
-    return () => obs.disconnect();
-  }, []);
+    const calc = () => setSpacerH(window.innerHeight + TOTAL_SLIDE + 800)
+    calc()
+    window.addEventListener('resize', calc)
+    return () => window.removeEventListener('resize', calc)
+  }, [])
 
-  /* ── Centre active card in gallery ── */
+  const onScroll = useCallback(() => {
+    const spacer = spacerRef.current
+    if (!spacer) return
+
+    const rect      = spacer.getBoundingClientRect()
+    const available = spacer.offsetHeight - window.innerHeight
+    if (available <= 0) return
+
+    const p = Math.min(Math.max(-rect.top / available, 0), 1)
+
+    setIsActive(p > 0 && p < 1)
+
+    const fadeInP  = easeInOut(norm(p, 0, FADE_IN_END))
+    const fadeOutP = easeInOut(norm(p, FADE_OUT_START, 1))
+
+    const opacity = p < FADE_IN_END
+      ? fadeInP
+      : p < FADE_OUT_START
+        ? 1
+        : 1 - fadeOutP
+
+    const transY = p < FADE_IN_END
+      ? 20 * (1 - fadeInP)
+      : p < FADE_OUT_START
+        ? 0
+        : -24 * fadeOutP
+
+    setPanelOpacity(opacity)
+    setPanelTransY(transY)
+
+    const cp = easeInOut(norm(p, FADE_IN_END, FADE_OUT_START))
+    const tx = -(cp * TOTAL_SLIDE)
+    setTranslateX(tx)
+    setBarWidth(cp * 100)
+    setCardP(cp)
+
+    setActiveIdx(Math.min(
+      Math.floor((cp * TOTAL_SLIDE) / (CARD_W + CARD_GAP) + 0.2),
+      projects.length - 1
+    ))
+
+    setNextVisible(p >= 1)
+  }, [])
+
   useEffect(() => {
-    const gallery = galleryRef.current;
-    const card    = cardRefs.current[active];
-    if (!gallery || !card) return;
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [onScroll])
 
-    // Use rAF so the browser has applied the new width before we measure
-    const raf = requestAnimationFrame(() => {
-      const gRect = gallery.getBoundingClientRect();
-      const cRect = card.getBoundingClientRect();
-      const scrollLeft = gallery.scrollLeft + cRect.left - gRect.left
-                       - gRect.width / 2 + cRect.width / 2;
-      gallery.scrollTo({ left: scrollLeft, behavior: 'smooth' });
-    });
-    return () => cancelAnimationFrame(raf);
-  }, [active]);
-
-  const prev = () => setActive(i => Math.max(0, i - 1));
-  const next = () => setActive(i => Math.min(projects.length - 1, i + 1));
+  const seeMoreOpacity = easeInOut(norm(cardP, 0.82, 0.98))
 
   return (
-    <section
-      className={`projects${visible ? ' projects--in' : ''}`}
-      id="projects"
-      ref={sectionRef}
-    >
-      {/* ── Header ── */}
-      <div className="projects__header">
-        <div className="projects__eyebrow">// THE AGENCY</div>
+    <>
+      <div
+        ref={spacerRef}
+        className="hp__spacer"
+        style={{ height: spacerH }}
+      />
 
-        <h2 className="projects__headline">
-          <span className="projects__hl-1">OASIC IS A VISIONARY DESIGN AGENCY</span>
-          <span className="projects__hl-2">THAT BREATHES LIFE INTO IDEAS AND</span>
-          <span className="projects__hl-2">TRANSFORMS THEM INTO EXTRAORDINARY</span>
-          <span className="projects__hl-2">REALITIES.</span>
-        </h2>
+      <div
+        className={`hp__panel${isActive ? ' hp__panel--active' : ''}`}
+        style={{
+          opacity: panelOpacity,
+          transform: `translateY(${panelTransY}px)`,
+        }}
+      >
+        <div className="hp__inner">
 
-        <div className="projects__sub-row">
-          <a href="#contact" className="projects__talk">
-            <span className="projects__talk-circle">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <path d="M3 9h12M10 5l4 4-4 4" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </span>
-            <span className="projects__talk-label">LET'S TALK NOW</span>
-          </a>
-          <p className="projects__desc">
-            Oasic is a visionary design agency that breathes life into ideas and
-            transforms them into extraordinary realities.
-          </p>
+          <div className="hp__top-row">
+            <div className="hp__title-block">
+              <p className="hp__title-label">Selected Work — 2019–2025</p>
+              <h2 className="hp__title-main">Our<br /><em>Projects</em></h2>
+            </div>
+
+            <div className="hp__counter-block">
+              <div className={`hp__counter-num${activeIdx >= 0 ? ' hp__counter-num--lit' : ''}`}>
+                {String(activeIdx + 1).padStart(2, '0')}
+                <span style={{ color: '#1a1a1a', fontSize: '0.5em', verticalAlign: 'middle', margin: '0 4px' }}>/</span>
+                <span style={{ color: '#2a2a2a' }}>{String(projects.length).padStart(2, '0')}</span>
+              </div>
+              <p className="hp__counter-label">Projects</p>
+            </div>
+          </div>
+
+          <div className="hp__prog-wrap">
+            <div className="hp__prog-track">
+              <div className="hp__prog-fill" style={{ width: `${barWidth}%` }} />
+            </div>
+            <div className="hp__prog-dots">
+              {projects.map((p, i) => (
+                <span key={p.id} className={`hp__pdot${i === activeIdx ? ' hp__pdot--active' : ''}`}>
+                  {p.number}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="hp__track-outer">
+            <div className="hp__track" style={{ transform: `translateX(${translateX}px)` }}>
+
+              {projects.map((proj, i) => (
+                <div
+                  key={proj.id}
+                  className={`hp__card${i === activeIdx ? ' hp__card--active' : ''}`}
+                  style={{
+                    '--cc':      proj.color,
+                    '--cc-dim':  proj.color + '20',
+                    '--cc-dim2': proj.color + '2e',
+                    background:  proj.bg,
+                  }}
+                >
+                  {/* ── Image area ── */}
+                  <div className="hp__card-img-wrap">
+                    <img
+                      className="hp__card-img"
+                      src={proj.image}
+                      alt={proj.title}
+                      loading="lazy"
+                      draggable="false"
+                    />
+                    {/* Colour tint overlay on active */}
+                    <div className="hp__card-img-tint" />
+                    {/* Number watermark sits on image */}
+                    <div className="hp__card-num">{proj.number}</div>
+                    {/* Tag badge on image */}
+                    <div className="hp__card-tag-wrap">
+                      <span className="hp__card-tag">{proj.tag}</span>
+                    </div>
+                  </div>
+
+                  {/* ── Content area ── */}
+                  <div className="hp__card-body">
+                    <div>
+                      <h2 className="hp__card-title">{proj.title}</h2>
+                      <p  className="hp__card-cat">{proj.category}</p>
+                      <p  className="hp__card-desc">{proj.description}</p>
+                    </div>
+                    <div className="hp__card-foot">
+                      <span className="hp__card-year">{proj.year}</span>
+                      <div  className="hp__card-arrow">↗</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {/* See More Projects card */}
+              <a
+                href="/work"
+                className="hp__see-more"
+                style={{ opacity: seeMoreOpacity, transform: `translateY(${(1 - seeMoreOpacity) * 16}px)` }}
+              >
+                <div className="hp__see-more-label">More work</div>
+                <div className="hp__see-more-count">+{projects.length * 3}</div>
+                <div className="hp__see-more-bottom">
+                  <span className="hp__see-more-cta">See all projects ↗</span>
+                </div>
+              </a>
+
+            </div>
+          </div>
+
         </div>
       </div>
 
-      {/* ── Carousel ── */}
-      <div className="projects__carousel-wrap">
-        <div className="projects__gallery" ref={galleryRef} onMouseLeave={() => setActive(prev => prev)}>
-          {projects.map((p, i) => (
-            <div
-              key={p.no}
-              ref={el => cardRefs.current[i] = el}
-              className={`pj-card${active === i ? ' pj-card--active' : ''}`}
-              onMouseEnter={() => setActive(i)}
-              data-no={p.no}
-            >
-              <img className="pj-card__img" src={p.img} alt={p.title} loading="lazy" />
-              <div className="pj-card__overlay" />
-              <div className="pj-card__info">
-                <span className="pj-card__cat">{p.category}</span>
-                <span className="pj-card__title">{p.title}</span>
-              </div>
+      <section className={`hp__next${nextVisible ? ' hp__next--vis' : ''}`}>
+        <p className="hp__next-lbl">About the Studio</p>
+        <div className="hp__next-grid">
+          {aboutItems.map(item => (
+            <div className="hp__next-item" key={item.label}>
+              <p className="hp__next-item-lbl">{item.label}</p>
+              <p className="hp__next-item-val">{item.value}</p>
             </div>
           ))}
         </div>
-
-        <button
-          className="projects__arrow projects__arrow--prev"
-          onClick={prev}
-          disabled={active === 0}
-          aria-label="Previous project"
-        >
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <path d="M15 9H3M7 5L3 9l4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-        <button
-          className="projects__arrow projects__arrow--next"
-          onClick={next}
-          disabled={active === projects.length - 1}
-          aria-label="Next project"
-        >
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-      </div>
-
-      {/* ── Dots ── */}
-      <div className="projects__dots" role="tablist">
-        {projects.map((_, i) => (
-          <button
-            key={i}
-            role="tab"
-            aria-selected={active === i}
-            className={`projects__dot${active === i ? ' projects__dot--active' : ''}`}
-            onMouseEnter={() => setActive(i)}
-            aria-label={`Project ${i + 1}`}
-          />
-        ))}
-      </div>
-
-      {/* ── Footer CTA ── */}
-      <div className="projects__footer">
-        <a href="/work" className="projects__portfolio-btn">
-          See our portfolio
-        </a>
-      </div>
-    </section>
-  );
-};
-
-export default Projects;
-export { projects };
+        <div className="hp__cta-row">
+          <h2 className="hp__cta-title">Mari buat sesuatu<br />yang <em>bermakna</em></h2>
+          {/* <button className="hp__cta-btn">Mulai Project →</button> */}
+        </div>
+      </section>
+    </>
+  )
+}
