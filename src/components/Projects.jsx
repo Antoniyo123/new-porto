@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
+import { Link } from 'react-router-dom'
 import '../styles/Projects.css'
 
 const projects = [
@@ -88,11 +89,9 @@ export default function HorizontalProjects() {
   const onScroll = useCallback(() => {
     const spacer = spacerRef.current
     if (!spacer) return
-
     const rect      = spacer.getBoundingClientRect()
     const available = spacer.offsetHeight - window.innerHeight
     if (available <= 0) return
-
     const p = Math.min(Math.max(-rect.top / available, 0), 1)
 
     setIsActive(p > 0 && p < 1)
@@ -100,32 +99,17 @@ export default function HorizontalProjects() {
     const fadeInP  = easeInOut(norm(p, 0, FADE_IN_END))
     const fadeOutP = easeInOut(norm(p, FADE_OUT_START, 1))
 
-    const opacity = p < FADE_IN_END
-      ? fadeInP
-      : p < FADE_OUT_START
-        ? 1
-        : 1 - fadeOutP
-
-    const transY = p < FADE_IN_END
-      ? 20 * (1 - fadeInP)
-      : p < FADE_OUT_START
-        ? 0
-        : -24 * fadeOutP
+    const opacity = p < FADE_IN_END ? fadeInP : p < FADE_OUT_START ? 1 : 1 - fadeOutP
+    const transY  = p < FADE_IN_END ? 20 * (1 - fadeInP) : p < FADE_OUT_START ? 0 : -24 * fadeOutP
 
     setPanelOpacity(opacity)
     setPanelTransY(transY)
 
     const cp = easeInOut(norm(p, FADE_IN_END, FADE_OUT_START))
-    const tx = -(cp * TOTAL_SLIDE)
-    setTranslateX(tx)
+    setTranslateX(-(cp * TOTAL_SLIDE))
     setBarWidth(cp * 100)
     setCardP(cp)
-
-    setActiveIdx(Math.min(
-      Math.floor((cp * TOTAL_SLIDE) / (CARD_W + CARD_GAP) + 0.2),
-      projects.length - 1
-    ))
-
+    setActiveIdx(Math.min(Math.floor((cp * TOTAL_SLIDE) / (CARD_W + CARD_GAP) + 0.2), projects.length - 1))
     setNextVisible(p >= 1)
   }, [])
 
@@ -139,18 +123,11 @@ export default function HorizontalProjects() {
 
   return (
     <>
-      <div
-        ref={spacerRef}
-        className="hp__spacer"
-        style={{ height: spacerH }}
-      />
+      <div ref={spacerRef} className="hp__spacer" style={{ height: spacerH }} />
 
       <div
         className={`hp__panel${isActive ? ' hp__panel--active' : ''}`}
-        style={{
-          opacity: panelOpacity,
-          transform: `translateY(${panelTransY}px)`,
-        }}
+        style={{ opacity: panelOpacity, transform: `translateY(${panelTransY}px)` }}
       >
         <div className="hp__inner">
 
@@ -159,7 +136,6 @@ export default function HorizontalProjects() {
               <p className="hp__title-label">Selected Work — 2019–2025</p>
               <h2 className="hp__title-main">Our<br /><em>Projects</em></h2>
             </div>
-
             <div className="hp__counter-block">
               <div className={`hp__counter-num${activeIdx >= 0 ? ' hp__counter-num--lit' : ''}`}>
                 {String(activeIdx + 1).padStart(2, '0')}
@@ -197,26 +173,14 @@ export default function HorizontalProjects() {
                     background:  proj.bg,
                   }}
                 >
-                  {/* ── Image area ── */}
                   <div className="hp__card-img-wrap">
-                    <img
-                      className="hp__card-img"
-                      src={proj.image}
-                      alt={proj.title}
-                      loading="lazy"
-                      draggable="false"
-                    />
-                    {/* Colour tint overlay on active */}
+                    <img className="hp__card-img" src={proj.image} alt={proj.title} loading="lazy" draggable="false" />
                     <div className="hp__card-img-tint" />
-                    {/* Number watermark sits on image */}
                     <div className="hp__card-num">{proj.number}</div>
-                    {/* Tag badge on image */}
                     <div className="hp__card-tag-wrap">
                       <span className="hp__card-tag">{proj.tag}</span>
                     </div>
                   </div>
-
-                  {/* ── Content area ── */}
                   <div className="hp__card-body">
                     <div>
                       <h2 className="hp__card-title">{proj.title}</h2>
@@ -231,18 +195,22 @@ export default function HorizontalProjects() {
                 </div>
               ))}
 
-              {/* See More Projects card */}
-              <a
-                href="/work"
+              {/* ── See More → navigates to /work ── */}
+              <Link
+                to="/projects"
                 className="hp__see-more"
-                style={{ opacity: seeMoreOpacity, transform: `translateY(${(1 - seeMoreOpacity) * 16}px)` }}
+                style={{
+                  opacity: seeMoreOpacity,
+                  transform: `translateY(${(1 - seeMoreOpacity) * 16}px)`,
+                  pointerEvents: seeMoreOpacity > 0.5 ? 'auto' : 'none',
+                }}
               >
                 <div className="hp__see-more-label">More work</div>
                 <div className="hp__see-more-count">+{projects.length * 3}</div>
                 <div className="hp__see-more-bottom">
                   <span className="hp__see-more-cta">See all projects ↗</span>
                 </div>
-              </a>
+              </Link>
 
             </div>
           </div>
@@ -262,7 +230,6 @@ export default function HorizontalProjects() {
         </div>
         <div className="hp__cta-row">
           <h2 className="hp__cta-title">Mari buat sesuatu<br />yang <em>bermakna</em></h2>
-          {/* <button className="hp__cta-btn">Mulai Project →</button> */}
         </div>
       </section>
     </>

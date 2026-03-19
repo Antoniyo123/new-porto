@@ -492,3 +492,9 @@
 }
 
 .hp__cta-btn:hover { background: #a855f7; color: #fff; gap: 20px; }
+
+@media (max-width: 600px){
+  .hp__top-row { flex-direction: column; align-items: flex-start; gap: 24px; }
+  .hp__prog-wrap { padding: 0 10px; }
+  .hp__track-outer { padding: 0 20px; }
+}

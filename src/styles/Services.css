@@ -443,7 +443,7 @@
 
   .sv__header { padding: 56px var(--pad-x) 36px; align-items: flex-start; flex-direction: column; gap: 16px; }
 
-  .sv__heading { font-size: clamp(32px, 10vw, 52px); }
+  .sv__heading { font-size: clamp(20px, 6.5vw, 52px); }
 
   /* Row: number + title + arrow only */
   .sv__item-inner {
@@ -455,7 +455,7 @@
   /* Hide tag on small mobile — cluttered */
   .sv__tag { display: none; }
 
-  .sv__title { font-size: clamp(20px, 6.5vw, 32px); white-space: normal; }
+  .sv__title { font-size: clamp(20px, 5vw, 32px); white-space: normal; }
 
   .sv__no { font-size: 10px; }
 
