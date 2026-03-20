@@ -297,7 +297,7 @@
 .hp__card-cat {
   font-size: 9px;
   letter-spacing: 0.22em;
-  color: #3a3a3a;
+  color: #8d8a8a;
   text-transform: uppercase;
   transition: color 0.5s;
 }
@@ -307,12 +307,12 @@
 .hp__card-desc {
   font-size: 11px;
   line-height: 1.75;
-  color: #3a3a3a;
+  color: #7c7979;
   margin-top: 10px;
   transition: color 0.5s;
 }
 
-.hp__card.hp__card--active .hp__card-desc { color: #666; }
+.hp__card.hp__card--active .hp__card-desc { color: #969292; }
 
 .hp__card-foot {
   display: flex;
