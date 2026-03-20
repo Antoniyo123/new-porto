@@ -10,7 +10,7 @@
   --nav-bg:       #f5f5f4;
   --nav-bg-scroll: rgba(245,245,244,0.92);
   --nav-ink:      #111111;
-  --nav-mid:      #888888;
+  --nav-mid:      #828080;
   --nav-line:     rgba(0,0,0,0.08);
   --nav-red:      #ff3c3c;
   --nav-ease:     cubic-bezier(0.16,1,0.3,1);
@@ -22,7 +22,7 @@
   --nav-bg:        #080808;
   --nav-bg-scroll: rgba(8,8,8,0.92);
   --nav-ink:       #f0ece4;
-  --nav-mid:       #555;
+  --nav-mid:       #b6b3b3;
   --nav-line:      rgba(255,255,255,0.07);
   --nav-shadow:    0 2px 24px rgba(0,0,0,0.4);
 }

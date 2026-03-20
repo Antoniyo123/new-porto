@@ -9,7 +9,7 @@ const LINKS = [
 ];
 
 // Which routes get the dark navbar
-const DARK_ROUTES = [ '/about', '/contact'];
+const DARK_ROUTES = ['/', '/about', '/contact'];
 
 const Navbar = () => {
   const [scrolled,  setScrolled]  = useState(false);

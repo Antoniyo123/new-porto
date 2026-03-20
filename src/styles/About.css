@@ -144,7 +144,7 @@
 .ab__body {
   font-size: 14px;
   line-height: 1.9;
-  color: #555;
+  color: #e8e2e2;
   margin-bottom: 56px;
   max-width: 460px;
   font-weight: 300;
@@ -160,7 +160,7 @@
   display: flex;
   flex-direction: column;
   gap: 0;
-  border-top: 1px solid #111;
+  border-top: 1px solid #807d7d;
   margin-bottom: 56px;
 }
 
@@ -169,7 +169,7 @@
   align-items: baseline;
   justify-content: space-between;
   padding: 20px 0;
-  border-bottom: 1px solid #111;
+  border-bottom: 1px solid #7e7a7a;
   cursor: default;
 }
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Hero.css';
+import { Link } from "react-router-dom";
 
 const BRANDS = ['PAPERZ', 'Dorfus', 'Martino', 'square', 'Gobona'];
 
@@ -75,20 +76,23 @@ const Hero = () => {
               extraordinary realities.
             </p>
             <div className="hr__actions">
-              <a href="#contact" className="hr__cta-primary">
-                Let's talk
-                <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M4 16L16 4M16 4H7M16 4v9"
-                    stroke="currentColor"
-                    strokeWidth="2.2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </a>
-              <a href="#projects" className="hr__cta-secondary">See work</a>
-            </div>
+  <Link to="/contact" className="hr__cta-primary">
+    Let's talk
+    <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+      <path
+        d="M4 16L16 4M16 4H7M16 4v9"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  </Link>
+
+  <Link to="/projects" className="hr__cta-secondary">
+    See work
+  </Link>
+</div>
           </div>
 
         </div>

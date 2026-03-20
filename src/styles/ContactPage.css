@@ -104,7 +104,7 @@
 .ct__hero-title em { font-style: italic; color: var(--red); }
 .ct__hero-title .ct__outline {
   color: transparent;
-  -webkit-text-stroke: 1.5px #2a2a2a;
+  -webkit-text-stroke: 1.5px #d8d3d3;
 }
 
 /* Info strip — dark */
@@ -130,7 +130,7 @@
   font-size: 8px;
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: #333;
+  color: #868282;
 }
 .ct__hero-strip-val {
   font-family: var(--syne);
@@ -180,7 +180,7 @@
 .ct__option-no {
   font-size: 9px;
   letter-spacing: 0.22em;
-  color: #333;
+  color: #d2cfcf;
   margin-bottom: 24px;
   text-transform: uppercase;
 }
@@ -213,7 +213,7 @@
   font-size: 12px;
   font-weight: 300;
   line-height: 1.85;
-  color: #555;
+  color: #eae4e4;
   max-width: 320px;
   margin: 0 0 32px;
   flex: 1;

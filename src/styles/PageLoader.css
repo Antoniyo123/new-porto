@@ -1,0 +1,318 @@
+/* PageLoader.css
+   Cinematic curtain slide — LXY design language
+   #080808 · #ff3c3c · Syne + DM Mono
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@800&family=DM+Mono:wght@300;400&display=swap');
+
+/* ════════════════════════════════
+   CURTAIN PANEL
+════════════════════════════════ */
+.pl {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.pl--active { pointer-events: auto; }
+
+/* The sliding panel — split left white / right black */
+.pl__curtain {
+  position: absolute;
+  inset: 0;
+  display: flex;
+
+  transform: translateX(-100%);
+  transition: transform 0.55s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.pl--entering .pl__curtain {
+  transform: translateX(0);
+}
+
+.pl--leaving .pl__curtain {
+  transform: translateX(100%);
+  transition: transform 0.55s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* Left half — white */
+.pl__half--light {
+  flex: 1;
+  background: #f5f5f4;
+  position: relative;
+}
+
+/* Right half — black */
+.pl__half--dark {
+  flex: 1;
+  background: #080808;
+  position: relative;
+}
+
+
+/* ════════════════════════════════
+   VERTICAL RULES
+════════════════════════════════ */
+.pl__vl {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 1px;
+}
+/* On light half — dark rule */
+.pl__half--light .pl__vl { background: rgba(0,0,0,0.1); }
+.pl__half--light .pl__vl--l { left:  56px; }
+.pl__half--light .pl__vl--r { right: 0; }   /* seam between halves */
+
+/* On dark half — light rule */
+.pl__half--dark .pl__vl { background: #1a1a1a; }
+.pl__half--dark .pl__vl--l { left: 0; }
+.pl__half--dark .pl__vl--r { right: 56px; }
+
+/* Center divider line spanning full curtain */
+.pl__divider {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: #ff3c3c;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.3s 0.2s;
+}
+.pl--entering .pl__divider { opacity: 1; }
+.pl--leaving  .pl__divider { opacity: 0; transition-delay: 0s; }
+
+
+/* ════════════════════════════════
+   CORNER BRACKETS
+════════════════════════════════ */
+.pl__corner {
+  position: absolute;
+  width: 14px; height: 14px;
+  border-style: solid;
+  z-index: 3;
+}
+/* Light half corners */
+.pl__half--light .pl__corner { border-color: rgba(0,0,0,0.12); }
+.pl__half--light .pl__corner--tl { top: 16px; left: 16px;   border-width: 1px 0 0 1px; }
+.pl__half--light .pl__corner--tr { top: 16px; right: 16px;  border-width: 1px 1px 0 0; }
+.pl__half--light .pl__corner--bl { bottom: 16px; left: 16px;  border-width: 0 0 1px 1px; }
+.pl__half--light .pl__corner--br { bottom: 16px; right: 16px; border-width: 0 1px 1px 0; }
+
+/* Dark half corners */
+.pl__half--dark .pl__corner { border-color: #1e1e1e; }
+.pl__half--dark .pl__corner--tl { top: 16px; left: 16px;   border-width: 1px 0 0 1px; }
+.pl__half--dark .pl__corner--tr { top: 16px; right: 16px;  border-width: 1px 1px 0 0; }
+.pl__half--dark .pl__corner--bl { bottom: 16px; left: 16px;  border-width: 0 0 1px 1px; }
+.pl__half--dark .pl__corner--br { bottom: 16px; right: 16px; border-width: 0 1px 1px 0; }
+
+
+/* ════════════════════════════════
+   META STRIP
+════════════════════════════════ */
+.pl__meta {
+  position: absolute;
+  top: 32px;
+  left: 72px; right: 72px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.3s 0.2s;
+}
+.pl--entering .pl__meta { opacity: 1; }
+.pl--leaving  .pl__meta { opacity: 0; transition-delay: 0s; }
+
+.pl__meta-item {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Left item sits on light half */
+.pl__meta-item--light { color: rgba(0,0,0,0.35); }
+/* Right item sits on dark half */
+.pl__meta-item--dark  { color: #333; }
+
+.pl__meta-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #ff3c3c;
+  animation: pl-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pl-pulse {
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0.3; }
+}
+
+
+/* ════════════════════════════════
+   WORDMARK — on light half
+════════════════════════════════ */
+.pl__wordmark {
+  position: absolute;
+  top: 50%;
+  left: 72px;
+  display: flex;
+  align-items: baseline;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(56px, 10vw, 120px);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  z-index: 3;
+
+  opacity: 0;
+  transform: translateY(calc(-50% + 20px));
+  transition: opacity 0.5s 0.15s cubic-bezier(0.16,1,0.3,1),
+              transform 0.5s 0.15s cubic-bezier(0.16,1,0.3,1);
+}
+
+.pl--entering .pl__wordmark {
+  opacity: 1;
+  transform: translateY(-50%);
+}
+.pl--leaving .pl__wordmark {
+  opacity: 0;
+  transform: translateY(calc(-50% - 16px));
+  transition-delay: 0s;
+}
+
+/* LX on light half = dark ink */
+.pl__wordmark-lx { color: #0e0e0e; }
+/* Y straddles or sits on seam — red always */
+.pl__wordmark-y  { color: #ff3c3c; }
+
+
+/* ════════════════════════════════
+   DESTINATION — on dark half
+════════════════════════════════ */
+.pl__dest {
+  position: absolute;
+  top: 50%;
+  right: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  z-index: 3;
+
+  opacity: 0;
+  transform: translateY(calc(-50% + 16px));
+  transition: opacity 0.4s 0.25s cubic-bezier(0.16,1,0.3,1),
+              transform 0.4s 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+.pl--entering .pl__dest {
+  opacity: 1;
+  transform: translateY(-50%);
+}
+.pl--leaving .pl__dest {
+  opacity: 0;
+  transform: translateY(calc(-50% - 12px));
+  transition-delay: 0s;
+}
+
+.pl__dest-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #333;
+}
+
+.pl__dest-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(18px, 2.5vw, 28px);
+  letter-spacing: -0.02em;
+  color: #f0ece4;
+}
+
+
+/* ════════════════════════════════
+   PROGRESS BAR (bottom of dark half)
+════════════════════════════════ */
+.pl__progress {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: #1a1a1a;
+}
+
+.pl__progress-fill {
+  height: 100%;
+  background: #ff3c3c;
+  width: 0%;
+  position: relative;
+  transition: width 0.08s linear;
+}
+
+.pl__progress-fill::after {
+  content: '';
+  position: absolute;
+  right: 0; top: -3px;
+  width: 1px; height: 7px;
+  background: #ff3c3c;
+}
+
+/* Light half bottom line */
+.pl__half--light .pl__bottom-line {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: rgba(0,0,0,0.08);
+}
+
+
+/* ════════════════════════════════
+   SCANLINE — only on dark half
+════════════════════════════════ */
+.pl__scanline {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent, transparent 2px,
+    rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px
+  );
+  opacity: 0.3;
+}
+
+
+/* ════════════════════════════════
+   SLIM TOP BAR
+════════════════════════════════ */
+.pl__topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  z-index: 9999;
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: #ff3c3c;
+  transition: transform 0.08s linear, opacity 0.3s;
+  opacity: 0;
+}
+.pl__topbar--active { opacity: 1; }
+
+
+/* ════════════════════════════════
+   RESPONSIVE
+════════════════════════════════ */
+@media (max-width: 768px) {
+  .pl__half--light .pl__vl--l { left: 20px; }
+  .pl__half--dark .pl__vl--r  { right: 20px; }
+  .pl__meta    { left: 28px; right: 28px; }
+  .pl__wordmark { left: 28px; font-size: clamp(44px, 12vw, 80px); }
+  .pl__dest    { right: 28px; }
+}
