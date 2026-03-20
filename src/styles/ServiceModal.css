@@ -292,7 +292,7 @@
 }
 .svm__step:hover .svm__step-no { color: var(--svm-color, #ff3c3c); }
 
-.svm__step-content {}
+
 
 .svm__step-name {
   font-family: 'Syne', sans-serif;
