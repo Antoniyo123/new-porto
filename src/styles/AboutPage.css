@@ -725,8 +725,8 @@
 
   .abt__hero { padding: 80px var(--pad-x) 0; }
   .abt__back { top: 24px; font-size: 8px; }
-  .abt__hero-title { font-size: clamp(44px, 15vw, 68px); }
-  .abt__hero-title .abt__outline { -webkit-text-stroke: 1px #3a3a3a; }
+  .abt__hero-title { font-size: clamp(44px, 12vw, 68px); }
+  .abt__hero-title .abt__outline { -webkit-text-stroke: 1px #b1acac; }
   .abt__hero-strip { grid-template-columns: 1fr 1fr; }
 
   .abt__photo-wrap { height: 70vw; }
