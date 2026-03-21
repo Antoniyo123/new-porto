@@ -325,7 +325,7 @@
   font-size: 8px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #bbb;
+  color: #353232a1;
   border: 1px solid rgba(0,0,0,0.1);
   padding: 3px 10px;
   flex-shrink: 0;
@@ -356,7 +356,7 @@
   font-size: 8px;
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: #bbb;
+  color: #6e6b6b;
 }
 .ct__info-val {
   font-family: var(--syne);
@@ -368,7 +368,7 @@
 .ct__info-sub {
   font-size: 10px;
   font-weight: 300;
-  color: #888;
+  color: #525151;
   line-height: 1.6;
 }
 

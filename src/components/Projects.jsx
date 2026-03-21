@@ -4,7 +4,7 @@ import '../styles/Projects.css'
 
 const projects = [
   {
-    id: 1, number: '01', title: 'Neon Abyss',
+    id: 1, number: '01', title: 'Kaca Kreative',
     category: 'Branding / Identity', year: '2024',
     color: '#FF3C3C', bg: '#0d0808',
     description: 'Sistem identitas visual untuk brand streetwear generasi baru yang menggabungkan elemen cyber-punk dan tradisi batik modern.',
@@ -12,7 +12,7 @@ const projects = [
     image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=840&h=400&fit=crop&q=80',
   },
   {
-    id: 2, number: '02', title: 'Solara UI',
+    id: 2, number: '02', title: 'Merantau',
     category: 'Product Design', year: '2024',
     color: '#FFB830', bg: '#0d0b06',
     description: 'Design system komprehensif untuk platform fintech dengan 300+ komponen dan aksesibilitas WCAG AAA.',
@@ -20,7 +20,7 @@ const projects = [
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=840&h=400&fit=crop&q=80',
   },
   {
-    id: 3, number: '03', title: 'Archipelago',
+    id: 3, number: '03', title: 'Indobizcorner',
     category: 'Web Experience', year: '2023',
     color: '#00E5CC', bg: '#060d0b',
     description: 'Pengalaman web imersif memetakan keanekaragaman hayati kepulauan Indonesia melalui visual data interaktif.',
@@ -28,7 +28,7 @@ const projects = [
     image: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=840&h=400&fit=crop&q=80',
   },
   {
-    id: 4, number: '04', title: 'Void Studio',
+    id: 4, number: '04', title: 'BSI Coin',
     category: 'Motion / Film', year: '2023',
     color: '#A855F7', bg: '#09070d',
     description: 'Sequence pembuka sinematik untuk studio animasi independen menggunakan teknik tipografi kinetik.',
@@ -36,7 +36,7 @@ const projects = [
     image: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=840&h=400&fit=crop&q=80',
   },
   {
-    id: 5, number: '05', title: 'Kira App',
+    id: 5, number: '05', title: 'SaromaseCO',
     category: 'Mobile UX', year: '2025',
     color: '#4ADE80', bg: '#070d08',
     description: 'Aplikasi wellness yang merancang ulang tracking kebiasaan dengan pendekatan berbasis konteks dan AI lokal.',

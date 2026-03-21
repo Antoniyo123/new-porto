@@ -3,7 +3,7 @@
 :root {
   --bg:    #f5f5f4;
   --ink:   #0e0e0e;
-  --mid:   #888;
+  --mid:   #0f0e0e9f;
   --line:  rgba(0,0,0,0.08);
   --red:   #ff3c3c;
   --nav-h: 72px;
@@ -123,7 +123,7 @@
   font-size: 12px;
   font-weight: 300;
   line-height: 1.9;
-  color: var(--mid);
+  color: #0e0e0e;
   margin: 0;
   max-width: 300px;
 }
