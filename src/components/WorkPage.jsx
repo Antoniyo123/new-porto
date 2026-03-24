@@ -3,93 +3,64 @@ import { Link } from 'react-router-dom'
 import '../styles/WorkPage.css'
 import ProjectModal from './ProjectModal'
 
+const allImages = import.meta.glob('../assets/projects/**/*.{jpg,jpeg,png,webp}', { eager: true })
+
+function getImg(folder, filename) {
+  return allImages[`../assets/projects/${folder}/${filename}`]?.default
+}
+
 const ALL_PROJECTS = [
   {
     id: 1, number: '01', title: 'Brauss Networks',
-    category: 'Branding / Identity', year: '2024',
+    category: 'Web Design', year: '2024',
     color: '#FF3C3C',
-    description: 'Sistem identitas visual untuk brand streetwear generasi baru yang menggabungkan elemen cyber-punk dan tradisi batik modern.',
-    tag: 'Featured',
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=840&h=560&fit=crop&q=80',
+    description: 'A creative agency specializing in event management, brand activation, and end-to-end production for corporate and entertainment clients.',
+    tag: 'Web Design',
+    image: getImg('brauuss', 'brauss1.png'),
   },
   {
     id: 2, number: '02', title: 'KACA Kreative',
-    category: 'Product Design', year: '2024',
+    category: 'Web Design', year: '2024',
     color: '#FFB830',
-    description: 'Design system komprehensif untuk platform fintech dengan 300+ komponen dan aksesibilitas WCAG AAA.',
-    tag: 'Award',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=840&h=560&fit=crop&q=80',
+    description: 'A KOL management agency connecting brands with the right content creators to drive authentic engagement and campaign results.',
+    tag: 'Web Design',
+    image: getImg('kaca', 'kaca1.png'),
   },
   {
     id: 3, number: '03', title: 'IndobizCorner',
-    category: 'Web Experience', year: '2023',
+    category: 'Web Design', year: '2023',
     color: '#00C4AD',
-    description: 'Pengalaman web imersif memetakan keanekaragaman hayati kepulauan Indonesia melalui visual data interaktif.',
-    tag: 'Interactive',
-    image: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=840&h=560&fit=crop&q=80',
+    description: 'A trusted visa consultancy helping individuals and businesses navigate the visa application process for 20+ countries worldwide.',
+    tag: 'Web Design',
+    image: getImg('indobizcorner', 'indobiz3.png'),
   },
   {
-    id: 4, number: '04', title: 'BSI Coin',
-    category: 'Motion / Film', year: '2023',
-    color: '#A855F7',
-    description: 'Sequence pembuka sinematik untuk studio animasi independen menggunakan teknik tipografi kinetik.',
-    tag: 'Motion',
-    image: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=840&h=560&fit=crop&q=80',
+    id: 4, number: '04', title: 'Merantau.com',
+    category: 'Web Design', year: '2022',
+    color: '#FFB830',
+    description: 'A licensed overseas workforce placement company managing end-to-end recruitment, documentation, and deployment for migrant workers.',
+    tag: 'Web Design',
+    image: getImg('merantau', 'merantau1.png'),
   },
   {
-    id: 5, number: '05', title: 'Reminder Dashoard IdobizCorner',
-    category: 'Mobile UX', year: '2025',
-    color: '#22c55e',
-    description: 'Aplikasi wellness yang merancang ulang tracking kebiasaan dengan pendekatan berbasis konteks dan AI lokal.',
-    tag: 'Launch',
-    image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=840&h=560&fit=crop&q=80',
+    id: 5, number: '05', title: 'PilarTrust',
+    category: 'Web Design', year: '2025',
+    color: '#FFB830',
+    description: 'An ISO certification consultancy guiding companies through the full process of achieving international management system standards.',
+    tag: 'Web Design',
+    image: getImg('pilar', 'pilar1.png'),
   },
   {
     id: 6, number: '06', title: 'SaromaseCo',
-    category: 'Branding / Identity', year: '2023',
+    category: 'Web Design', year: '2023',
     color: '#FF3C3C',
-    description: 'Rebranding menyeluruh untuk label rekaman indie — dari wordmark hingga sistem packaging vinyl.',
-    tag: 'Branding',
-    image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=840&h=560&fit=crop&q=80',
-  },
-  {
-    id: 7, number: '07', title: 'Viaje Website',
-    category: 'Web Experience', year: '2022',
-    color: '#00C4AD',
-    description: 'Platform digital interaktif untuk dokumentasi fauna endemik Nusantara dengan visualisasi data spasial.',
-    tag: 'Digital',
-    image: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=840&h=560&fit=crop&q=80',
-  },
-  {
-    id: 8, number: '08', title: 'Merantau.com',
-    category: 'Type Design', year: '2022',
-    color: '#FFB830',
-    description: 'Keluarga tipografi display terinspirasi huruf kayu pasar tradisional — tersedia dalam 6 weight.',
-    tag: 'Type',
-    image: 'https://images.unsplash.com/photo-1563089145-599997674d42?w=840&h=560&fit=crop&q=80',
-  },
-  {
-    id: 9, number: '09', title: 'PilarTrust',
-    category: 'Product Design', year: '2025',
-    color: '#FFB830',
-    description: 'Dashboard analytics real-time untuk platform energi terbarukan — dark mode-first dengan 80+ komponen.',
-    tag: 'Product',
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=840&h=560&fit=crop&q=80',
+    description: 'A domestic logistics and freight company offering reliable parcel and cargo delivery services across all provinces in Indonesia.',
+    tag: 'Web Design',
+    image: getImg('saromaseco', 'saromase2.png'),
   },
 ]
 
-const FILTERS = ['All', 'Branding', 'Product', 'Digital', 'Motion', 'Type']
-
-function getCount(f) {
-  if (f === 'All') return ALL_PROJECTS.length
-  return ALL_PROJECTS.filter(p =>
-    p.category.toLowerCase().includes(f.toLowerCase()) ||
-    p.tag.toLowerCase().includes(f.toLowerCase())
-  ).length
-}
-
 export default function WorkPage() {
-  const [filter,     setFilter]     = useState('All')
   const [mounted,    setMounted]    = useState(false)
   const [activeProj, setActiveProj] = useState(null)
 
@@ -98,13 +69,6 @@ export default function WorkPage() {
     const t = setTimeout(() => setMounted(true), 60)
     return () => clearTimeout(t)
   }, [])
-
-  const filtered = filter === 'All'
-    ? ALL_PROJECTS
-    : ALL_PROJECTS.filter(p =>
-        p.category.toLowerCase().includes(filter.toLowerCase()) ||
-        p.tag.toLowerCase().includes(filter.toLowerCase())
-      )
 
   const openModal  = useCallback((proj) => setActiveProj(proj), [])
   const closeModal = useCallback(() => setActiveProj(null), [])
@@ -153,31 +117,9 @@ export default function WorkPage() {
           </div>
         </header>
 
-        {/* ── FILTER BAR ── */}
-        <div className="wk__filter-bar">
-          <div className="wk__filter-label">Filter</div>
-          <div className="wk__filters">
-            {FILTERS.map(f => (
-              <button
-                key={f}
-                className={`wk__filter-btn${filter === f ? ' wk__filter-btn--active' : ''}`}
-                onClick={() => setFilter(f)}
-              >
-                {f}
-                {f !== 'All' && (
-                  <span className="wk__filter-count">{getCount(f)}</span>
-                )}
-              </button>
-            ))}
-          </div>
-          <div className="wk__filter-total">
-            {filtered.length} result{filtered.length !== 1 ? 's' : ''}
-          </div>
-        </div>
-
         {/* ── GRID ── */}
         <main className="wk__grid">
-          {filtered.map((proj, i) => (
+          {ALL_PROJECTS.map((proj, i) => (
             <article
               key={proj.id}
               className="wk__card"
@@ -242,7 +184,6 @@ export default function WorkPage() {
 
       </div>
 
-      {/* Modal — outside main so no stacking context issues */}
       <ProjectModal project={activeProj} onClose={closeModal} />
     </>
   )

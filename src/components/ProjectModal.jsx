@@ -1,144 +1,89 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import '../styles/ProjectModal.css'
 
-/* ─────────────────────────────────────────
-   Per-project detail data
-───────────────────────────────────────── */
+const allImages = import.meta.glob('../assets/projects/**/*.{jpg,jpeg,png,webp}', { eager: true })
+
+function folderImages(folder) {
+  const prefix = `../assets/projects/${folder}/`
+  return Object.entries(allImages)
+    .filter(([path]) => path.startsWith(prefix))
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([, mod]) => mod.default)
+    .filter(Boolean)
+}
+
 const PROJECT_DETAILS = {
   1: {
-    stats: [{ num: '6 mo', lbl: 'Duration' }, { num: '12',   lbl: 'Deliverables' }, { num: '3',    lbl: 'Rounds'  }],
-    deliverables: ['Logo & wordmark (primary + variants)', 'Brand colour system & typography', 'Brand guidelines (80-page PDF)', 'Pattern & texture asset library', 'Social media kit', 'Packaging mockups'],
+    // Brauss Network — Agency & Event Management
+    stats:        [{ num: '6 mo', lbl: 'Duration' }, { num: '12', lbl: 'Events' }, { num: '3', lbl: 'Rounds' }],
+    deliverables: ['Brand identity & visual system', 'Event concept & art direction', 'Talent & vendor coordination', 'Promotional materials', 'Social media campaign', 'Post-event report'],
     steps: [
-      { no: '01', name: 'Discovery', desc: 'Brand audit, cultural research, and competitor positioning.' },
-      { no: '02', name: 'Direction', desc: 'Three distinct creative directions presented for feedback.' },
-      { no: '03', name: 'Refinement', desc: 'Full system development from selected direction.' },
-      { no: '04', name: 'Delivery', desc: 'Final assets in all formats + guidelines handoff.' },
+      { no: '01', name: 'Discovery',   desc: 'Brand research, competitor analysis, and digital needs mapping for Brauss Network.' },
+      { no: '02', name: 'Wireframe',   desc: 'Page structure and main navigation flow planning.' },
+      { no: '03', name: 'UI Design',   desc: 'Full visual design — typography, color system, and layout per page.' },
+      { no: '04', name: 'Development', desc: 'Built with React + Vite, cross-device testing, and final launch.' },
     ],
-    images: [
-      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&h=506&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1634942537034-2531766767d1?w=900&h=506&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=900&h=506&fit=crop&q=85',
-    ],
+    images: folderImages('brauuss'),
   },
   2: {
-    stats: [{ num: '4 mo', lbl: 'Duration' }, { num: '300+', lbl: 'Components' }, { num: 'AAA',  lbl: 'WCAG' }],
-    deliverables: ['Complete design system (Figma)', '300+ reusable components', 'Design tokens (JSON)', 'Interactive prototype', 'Developer handoff docs', 'Usage documentation'],
+    // KACA Kreative — KOL Management
+    stats:        [{ num: '4 mo', lbl: 'Duration' }, { num: '50+', lbl: 'KOLs' }, { num: '3x', lbl: 'Engagement' }],
+    deliverables: ['KOL content strategy', 'Talent selection & onboarding', 'Creative brief per campaign', 'Performance monitoring & reports', 'Brand contract negotiation', 'Audience analysis'],
     steps: [
-      { no: '01', name: 'Audit', desc: 'Review of existing product and accessibility gaps.' },
-      { no: '02', name: 'Foundations', desc: 'Colour, type, spacing, and motion tokens.' },
-      { no: '03', name: 'Components', desc: 'Build library from atoms to complex patterns.' },
-      { no: '04', name: 'Handoff', desc: 'Annotated specs and dev-ready Figma file.' },
+      { no: '01', name: 'Discovery',   desc: "Understanding KACA's positioning and the clients they want to reach." },
+      { no: '02', name: 'Wireframe',   desc: 'Designing the KOL portfolio flow and service pages.' },
+      { no: '03', name: 'UI Design',   desc: 'Playful yet professional visuals suited to the creative industry.' },
+      { no: '04', name: 'Development', desc: 'Built with React + Vite, smooth animations, and performance optimization.' },
     ],
-    images: [
-      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&h=506&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1555421689-491a97ff2040?w=900&h=506&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&h=506&fit=crop&q=85',
-    ],
+    images: folderImages('kaca'),
   },
   3: {
-    stats: [{ num: '5 mo', lbl: 'Duration' }, { num: '500+', lbl: 'Data points' }, { num: '98',   lbl: 'Perf score' }],
-    deliverables: ['Interactive web experience', 'Data visualisation system', 'Responsive design', 'CMS integration', 'Performance optimisation', 'SEO & metadata'],
+    // IndobizCorner — Visa Agent
+    stats:        [{ num: '5 mo', lbl: 'Duration' }, { num: '20+', lbl: 'Countries' }, { num: '98%', lbl: 'Approval' }],
+    deliverables: ['Visa type consultation', 'Document preparation & verification', 'Embassy submission', 'Application status tracking', 'Visa on arrival service', 'Travel guide'],
     steps: [
-      { no: '01', name: 'Research', desc: 'Biodiversity data mapping and storytelling strategy.' },
-      { no: '02', name: 'UX Design', desc: 'Interaction model and scroll-driven narrative.' },
-      { no: '03', name: 'Visual Design', desc: 'Illustration system and data visualisation.' },
-      { no: '04', name: 'Build', desc: 'React + D3 implementation with CMS.' },
+      { no: '01', name: 'Discovery',   desc: 'Mapping visa services and understanding the needs of prospective users.' },
+      { no: '02', name: 'Wireframe',   desc: 'Page structure designed to help clients easily select the right visa type.' },
+      { no: '03', name: 'UI Design',   desc: 'Clean, trustworthy design — essential for a document services business.' },
+      { no: '04', name: 'Development', desc: 'Built with React + Vite, inquiry form, and per-country info pages.' },
     ],
-    images: [
-      'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=900&h=506&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=900&h=506&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=900&h=506&fit=crop&q=85',
-    ],
+    images: folderImages('indobizcorner'),
   },
   4: {
-    stats: [{ num: '3 mo', lbl: 'Duration' }, { num: '4K',   lbl: 'Resolution' }, { num: '90s',  lbl: 'Runtime' }],
-    deliverables: ['Opening sequence (90s)', 'Kinetic type system', 'Logo animation variants', 'Transition library', 'Sound design brief', 'Delivery in 4K + web'],
+    // Merantau.com — Overseas Workforce Placement
+    stats:        [{ num: '4 mo', lbl: 'Duration' }, { num: '15+', lbl: 'Countries' }, { num: '1000+', lbl: 'Workers' }],
+    deliverables: ['Worker recruitment & selection', 'Document & work visa processing', 'Pre-departure training', 'PJTKI coordination', 'Departure assistance', 'Post-placement support'],
     steps: [
-      { no: '01', name: 'Concept', desc: 'Storyboard, style frames, and music direction.' },
-      { no: '02', name: 'Type Design', desc: 'Kinetic typography system and motion language.' },
-      { no: '03', name: 'Animation', desc: 'Full sequence production in After Effects.' },
-      { no: '04', name: 'Delivery', desc: 'Render in multiple formats with full source files.' },
+      { no: '01', name: 'Discovery',   desc: 'Researching the primary audience — prospective workers and their families.' },
+      { no: '02', name: 'Wireframe',   desc: 'Clear information flow from registration through to departure.' },
+      { no: '03', name: 'UI Design',   desc: 'Warm visuals, easy to understand across diverse user backgrounds.' },
+      { no: '04', name: 'Development', desc: 'Built with React + Vite, online registration pages, and multi-language support.' },
     ],
-    images: [
-      'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=900&h=506&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=900&h=506&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=900&h=506&fit=crop&q=85',
-    ],
+    images: folderImages('merantau'),
   },
   5: {
-    stats: [{ num: '8 mo', lbl: 'Duration' }, { num: '60+',  lbl: 'Screens' }, { num: 'AI',   lbl: 'Powered' }],
-    deliverables: ['iOS & Android design', 'Onboarding flow', 'Habit tracking UX', 'AI context UI', 'App Store assets', 'Design system'],
+    // PilarTrust — ISO Certification
+    stats:        [{ num: '5 mo', lbl: 'Duration' }, { num: '10+', lbl: 'ISO Standards' }, { num: '100%', lbl: 'Certified' }],
+    deliverables: ['Gap analysis & initial assessment', 'Management system documentation', 'Internal auditor training', 'Certification audit assistance', 'Corrective action support', 'Official ISO certificate'],
     steps: [
-      { no: '01', name: 'Research', desc: 'User interviews, competitor analysis, and habit science review.' },
-      { no: '02', name: 'UX', desc: 'Flows, wireframes, and prototype testing.' },
-      { no: '03', name: 'UI Design', desc: 'Full visual design system for both platforms.' },
-      { no: '04', name: 'Handoff', desc: 'Developer specs, assets, and motion guidelines.' },
+      { no: '01', name: 'Discovery',   desc: 'Understanding the ISO services offered and the corporate client profile.' },
+      { no: '02', name: 'Wireframe',   desc: 'Service pages, certification process flow, and trust signal sections.' },
+      { no: '03', name: 'UI Design',   desc: 'Formal, authoritative design suited to the B2B corporate segment.' },
+      { no: '04', name: 'Development', desc: 'Built with React + Vite, consultation pages, and leads form integration.' },
     ],
-    images: [
-      'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=900&h=506&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1551650975-87deedd944c3?w=900&h=506&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1555421689-491a97ff2040?w=900&h=506&fit=crop&q=85',
-    ],
+    images: folderImages('pilar'),
   },
   6: {
-    stats: [{ num: '3 mo', lbl: 'Duration' }, { num: '8',    lbl: 'Formats' }, { num: '2024', lbl: 'Year' }],
-    deliverables: ['Wordmark redesign', 'Vinyl packaging system', 'Merch design templates', 'Digital brand kit', 'Press release assets', 'Style guide'],
+    // SaromaseCo — Domestic Logistics
+    stats:        [{ num: '3 mo', lbl: 'Duration' }, { num: '34', lbl: 'Provinces' }, { num: '2023', lbl: 'Year' }],
+    deliverables: ['Regular & express delivery service', 'Door-to-door pickup', 'Real-time shipment tracking', 'Special cargo handling', 'Shipping insurance', 'Monthly delivery reports'],
     steps: [
-      { no: '01', name: 'Audit', desc: 'Analysis of current brand and music identity.' },
-      { no: '02', name: 'Concept', desc: 'Three rebranding directions with moodboards.' },
-      { no: '03', name: 'System', desc: 'Full identity system across physical and digital.' },
-      { no: '04', name: 'Print', desc: 'Production-ready files for vinyl and merch.' },
+      { no: '01', name: 'Discovery',   desc: 'Researching sender needs — individuals and small business owners.' },
+      { no: '02', name: 'Wireframe',   desc: 'Shipping rate check, pickup order, and tracking in a single flow.' },
+      { no: '03', name: 'UI Design',   desc: 'Clean, fast-to-read visuals — prioritizing quick access to information.' },
+      { no: '04', name: 'Development', desc: 'Built with React + Vite, real-time shipping rate calculator, and tracking pages.' },
     ],
-    images: [
-      'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=900&h=506&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=900&h=506&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=900&h=506&fit=crop&q=85',
-    ],
-  },
-  7: {
-    stats: [{ num: '6 mo', lbl: 'Duration' }, { num: '1200', lbl: 'Species' }, { num: '4',    lbl: 'Languages' }],
-    deliverables: ['Interactive map platform', 'Data visualisation', 'Species illustration system', 'CMS & content pipeline', 'Multilingual support', 'Mobile-responsive'],
-    steps: [
-      { no: '01', name: 'Data', desc: 'GIS data integration and taxonomy mapping.' },
-      { no: '02', name: 'UX', desc: 'Spatial navigation and filter systems.' },
-      { no: '03', name: 'Design', desc: 'Illustration style and data visual language.' },
-      { no: '04', name: 'Build', desc: 'Mapbox + React with multilingual CMS.' },
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=900&h=506&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1569163139599-0f4517e36f51?w=900&h=506&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=900&h=506&fit=crop&q=85',
-    ],
-  },
-  8: {
-    stats: [{ num: '4 mo', lbl: 'Duration' }, { num: '6',    lbl: 'Weights' }, { num: '400+', lbl: 'Glyphs' }],
-    deliverables: ['Display typeface (6 weights)', 'Variable font file', 'OTF + WOFF2 formats', 'Type specimen PDF', 'Licensing documentation', 'Web embed kit'],
-    steps: [
-      { no: '01', name: 'Research', desc: 'Study of traditional market lettering and wood type.' },
-      { no: '02', name: 'Skeleton', desc: 'Core letterforms and spacing system.' },
-      { no: '03', name: 'Refinement', desc: 'Full character set and weight interpolation.' },
-      { no: '04', name: 'Delivery', desc: 'Font engineering, hinting, and packaging.' },
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1563089145-599997674d42?w=900&h=506&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?w=900&h=506&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=900&h=506&fit=crop&q=85',
-    ],
-  },
-  9: {
-    stats: [{ num: '5 mo', lbl: 'Duration' }, { num: '80+',  lbl: 'Components' }, { num: '100', lbl: 'Perf score' }],
-    deliverables: ['Real-time dashboard', 'Chart & graph library', 'Alert system UI', 'Dark mode-first design', 'Figma design system', 'Developer handoff'],
-    steps: [
-      { no: '01', name: 'Research', desc: 'Energy data workflows and operator interviews.' },
-      { no: '02', name: 'Architecture', desc: 'Dashboard layout and data hierarchy.' },
-      { no: '03', name: 'Design', desc: 'Dark-mode component library and chart system.' },
-      { no: '04', name: 'Build', desc: 'Next.js + Recharts implementation.' },
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&h=506&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&h=506&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=900&h=506&fit=crop&q=85',
-    ],
+    images: folderImages('saromaseco'),
   },
 }
 
@@ -151,10 +96,8 @@ function Carousel({ images }) {
   const prev = () => setIdx(i => Math.max(i - 1, 0))
   const next = () => setIdx(i => Math.min(i + 1, images.length - 1))
 
-  // Reset on image set change
   useEffect(() => { setIdx(0) }, [images])
 
-  // Keyboard left/right inside carousel
   useEffect(() => {
     const fn = (e) => {
       if (e.key === 'ArrowLeft')  prev()
@@ -166,11 +109,7 @@ function Carousel({ images }) {
 
   return (
     <div className="pm__carousel">
-      {/* Slides */}
-      <div
-        className="pm__slides"
-        style={{ transform: `translateX(-${idx * 100}%)` }}
-      >
+      <div className="pm__slides" style={{ transform: `translateX(-${idx * 100}%)` }}>
         {images.map((src, i) => (
           <div key={i} className={`pm__slide${i === idx ? ' pm__slide--active' : ''}`}>
             <img className="pm__slide-img" src={src} alt={`Project image ${i + 1}`} loading="lazy" draggable="false" />
@@ -178,12 +117,10 @@ function Carousel({ images }) {
         ))}
       </div>
 
-      {/* Counter */}
       <span className="pm__carousel-count">
         {String(idx + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
       </span>
 
-      {/* Prev / Next */}
       <div className="pm__carousel-nav">
         <button className="pm__carousel-btn" onClick={prev} disabled={idx === 0} aria-label="Previous image">
           <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
@@ -197,7 +134,6 @@ function Carousel({ images }) {
         </button>
       </div>
 
-      {/* Dots */}
       <div className="pm__carousel-dots">
         {images.map((_, i) => (
           <button
@@ -220,20 +156,17 @@ export default function ProjectModal({ project, onClose }) {
   const isOpen  = !!project
   const detail  = project ? PROJECT_DETAILS[project.id] : null
 
-  // Close on Escape
   useEffect(() => {
     const fn = (e) => { if (e.key === 'Escape') onClose() }
     if (isOpen) window.addEventListener('keydown', fn)
     return () => window.removeEventListener('keydown', fn)
   }, [isOpen, onClose])
 
-  // Lock body scroll
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [isOpen])
 
-  // Scroll panel to top on project change
   useEffect(() => {
     if (isOpen && bodyRef.current) bodyRef.current.scrollTop = 0
   }, [project?.id])
@@ -254,10 +187,9 @@ export default function ProjectModal({ project, onClose }) {
       >
         <div className="pm__accent" />
 
-        {/* Header */}
         <div className="pm__header">
           <div className="pm__header-meta">
-            <span className="pm__header-no">{project?.number} / 09</span>
+            <span className="pm__header-no">{project?.number} / 06</span>
             <span className="pm__header-tag">{project?.tag}</span>
           </div>
           <button className="pm__close" onClick={onClose} aria-label="Close">
@@ -267,14 +199,11 @@ export default function ProjectModal({ project, onClose }) {
           </button>
         </div>
 
-        {/* Scrollable body */}
         <div className="pm__body" ref={bodyRef}>
           {project && detail && (
             <>
-              {/* Carousel */}
               <Carousel images={detail.images} />
 
-              {/* Content */}
               <div className="pm__content">
                 <div className="pm__title-row">
                   <h2 className="pm__title">{project.title}</h2>
@@ -283,7 +212,6 @@ export default function ProjectModal({ project, onClose }) {
                 <p className="pm__cat">{project.category}</p>
                 <p className="pm__desc">{project.description}</p>
 
-                {/* Stats */}
                 <div className="pm__stats">
                   {detail.stats.map(s => (
                     <div className="pm__stat" key={s.lbl}>
@@ -293,7 +221,6 @@ export default function ProjectModal({ project, onClose }) {
                   ))}
                 </div>
 
-                {/* Deliverables */}
                 <p className="pm__section-label">What was delivered</p>
                 <div className="pm__deliverables">
                   {detail.deliverables.map((d, i) => (
@@ -304,7 +231,6 @@ export default function ProjectModal({ project, onClose }) {
                   ))}
                 </div>
 
-                {/* Process */}
                 <p className="pm__section-label">How we worked</p>
                 <div className="pm__steps">
                   {detail.steps.map(s => (
@@ -322,11 +248,8 @@ export default function ProjectModal({ project, onClose }) {
           )}
         </div>
 
-        {/* Footer */}
         <div className="pm__footer">
-          <p className="pm__footer-text">
-            Like what you see? Let's work together.
-          </p>
+          <p className="pm__footer-text">Like what you see? Let's work together.</p>
           <a href="mailto:hello@lxy.co" className="pm__cta">
             Start a project
             <svg width="11" height="11" viewBox="0 0 20 20" fill="none">

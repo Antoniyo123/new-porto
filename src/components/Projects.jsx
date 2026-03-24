@@ -2,53 +2,80 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import '../styles/Projects.css'
 
+const allImages = import.meta.glob('../assets/projects/**/*.{jpg,jpeg,png,webp}', { eager: true })
+
+function getImg(folder, filename) {
+  return allImages[`../assets/projects/${folder}/${filename}`]?.default
+}
+
 const projects = [
   {
-    id: 1, number: '01', title: 'Kaca Kreative',
-    category: 'Branding / Identity', year: '2024',
+    id: 1, number: '01', title: 'Brauss Networks',
+    category: 'Web Design', year: '2024',
     color: '#FF3C3C', bg: '#0d0808',
-    description: 'Sistem identitas visual untuk brand streetwear generasi baru yang menggabungkan elemen cyber-punk dan tradisi batik modern.',
-    tag: 'Featured',
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=840&h=400&fit=crop&q=80',
+    description: 'A creative agency specializing in event management, brand activation, and end-to-end production for corporate and entertainment clients.',
+    tag: 'Web Design',
+    image: getImg('brauuss', 'brauss1.png'),
   },
   {
-    id: 2, number: '02', title: 'Merantau',
-    category: 'Product Design', year: '2024',
+    id: 2, number: '02', title: 'KACA Kreative',
+    category: 'Web Design', year: '2024',
     color: '#FFB830', bg: '#0d0b06',
-    description: 'Design system komprehensif untuk platform fintech dengan 300+ komponen dan aksesibilitas WCAG AAA.',
-    tag: 'Award',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=840&h=400&fit=crop&q=80',
+    description: 'A KOL management agency connecting brands with the right content creators to drive authentic engagement and campaign results.',
+    tag: 'Web Design',
+    image: getImg('kaca', 'kaca1.png'),
   },
   {
-    id: 3, number: '03', title: 'Indobizcorner',
-    category: 'Web Experience', year: '2023',
+    id: 3, number: '03', title: 'IndobizCorner',
+    category: 'Web Design', year: '2023',
     color: '#00E5CC', bg: '#060d0b',
-    description: 'Pengalaman web imersif memetakan keanekaragaman hayati kepulauan Indonesia melalui visual data interaktif.',
-    tag: 'Interactive',
-    image: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=840&h=400&fit=crop&q=80',
+    description: 'A trusted visa consultancy helping individuals and businesses navigate the application process for 20+ countries worldwide.',
+    tag: 'Web Design',
+    image: getImg('indobizcorner', 'indobiz3.png'),
   },
   {
-    id: 4, number: '04', title: 'BSI Coin',
-    category: 'Motion / Film', year: '2023',
-    color: '#A855F7', bg: '#09070d',
-    description: 'Sequence pembuka sinematik untuk studio animasi independen menggunakan teknik tipografi kinetik.',
-    tag: 'Motion',
-    image: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=840&h=400&fit=crop&q=80',
+    id: 4, number: '04', title: 'Merantau.com',
+    category: 'Web Design', year: '2022',
+    color: '#FFB830', bg: '#0d0b06',
+    description: 'A licensed overseas workforce placement company managing end-to-end recruitment, documentation, and deployment for migrant workers.',
+    tag: 'Web Design',
+    image: getImg('merantau', 'merantau1.png'),
   },
   {
-    id: 5, number: '05', title: 'SaromaseCO',
-    category: 'Mobile UX', year: '2025',
+    id: 5, number: '05', title: 'PilarTrust',
+    category: 'Web Design', year: '2025',
     color: '#4ADE80', bg: '#070d08',
-    description: 'Aplikasi wellness yang merancang ulang tracking kebiasaan dengan pendekatan berbasis konteks dan AI lokal.',
-    tag: 'Launch',
-    image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=840&h=400&fit=crop&q=80',
+    description: 'An ISO certification consultancy guiding companies through the full process of achieving international management system standards.',
+    tag: 'Web Design',
+    image: getImg('pilar', 'pilar1.png'),
+  },
+  {
+    id: 6, number: '06', title: 'SaromaseCo',
+    category: 'Web Design', year: '2023',
+    color: '#FF3C3C', bg: '#0d0808',
+    description: 'A domestic logistics and freight company offering reliable parcel and cargo delivery services across all provinces in Indonesia.',
+    tag: 'Web Design',
+    image: getImg('saromaseco', 'saromase2.png'),
   },
 ]
 
-const aboutItems = [
-  { label: 'Services', value: 'Branding · Motion · Digital' },
-  { label: 'Clients',  value: '50+ Global Brands' },
-  { label: 'Founded',  value: 'Jakarta, 2019' },
+const faqs = [
+  {
+    q: 'What services do you offer?',
+    a: 'We specialize in web design and development using React + Vite — from UI/UX design and branding to full front-end build and launch.',
+  },
+  {
+    q: 'How long does a typical project take?',
+    a: 'Most projects take between 4 to 8 weeks depending on scope. Well give you a clear timeline after the initial discovery call.',
+  },
+  {
+    q: 'Do you work with clients outside Indonesia?',
+    a: 'Yes. We work with clients remotely across Southeast Asia and beyond. All communication is handled online.',
+  },
+  {
+    q: 'How do we get started?',
+    a: 'Simply reach out via the contact page. Well schedule a brief discovery call to understand your needs and send over a proposal.',
+  },
 ]
 
 const CARD_W      = 420
@@ -64,6 +91,21 @@ function easeInOut(t) {
 
 function norm(val, a, b) {
   return Math.min(Math.max((val - a) / (b - a), 0), 1)
+}
+
+function FaqItem({ q, a }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className={`hp__faq-item${open ? ' hp__faq-item--open' : ''}`} onClick={() => setOpen(o => !o)}>
+      <div className="hp__faq-q">
+        <span>{q}</span>
+        <span className="hp__faq-icon">{open ? '−' : '+'}</span>
+      </div>
+      <div className={`hp__faq-a-wrap${open ? ' hp__faq-a-wrap--open' : ''}`}>
+        <p className="hp__faq-a">{a}</p>
+      </div>
+    </div>
+  )
 }
 
 export default function HorizontalProjects() {
@@ -133,7 +175,6 @@ export default function HorizontalProjects() {
 
           <div className="hp__top-row">
             <div className="hp__title-block">
-
               <h2 className="hp__title-main">Our<br /><em>Projects</em></h2>
             </div>
             <div className="hp__counter-block">
@@ -161,7 +202,6 @@ export default function HorizontalProjects() {
 
           <div className="hp__track-outer">
             <div className="hp__track" style={{ transform: `translateX(${translateX}px)` }}>
-
               {projects.map((proj, i) => (
                 <div
                   key={proj.id}
@@ -195,7 +235,6 @@ export default function HorizontalProjects() {
                 </div>
               ))}
 
-              {/* ── See More → navigates to /work ── */}
               <Link
                 to="/projects"
                 className="hp__see-more"
@@ -211,25 +250,34 @@ export default function HorizontalProjects() {
                   <span className="hp__see-more-cta">See all projects ↗</span>
                 </div>
               </Link>
-
             </div>
           </div>
 
         </div>
       </div>
 
+      {/* ── FAQ SECTION ── */}
       <section className={`hp__next${nextVisible ? ' hp__next--vis' : ''}`}>
-        <p className="hp__next-lbl">About the Studio</p>
-        <div className="hp__next-grid">
-          {aboutItems.map(item => (
-            <div className="hp__next-item" key={item.label}>
-              <p className="hp__next-item-lbl">{item.label}</p>
-              <p className="hp__next-item-val">{item.value}</p>
-            </div>
-          ))}
-        </div>
-        <div className="hp__cta-row">
-          <h2 className="hp__cta-title">Mari buat sesuatu<br />yang <em>bermakna</em></h2>
+        <div className="hp__faq-layout">
+
+          {/* Left col — label + big title */}
+          <div className="hp__faq-left">
+            <p className="hp__faq-eyebrow">FAQ</p>
+            <h2 className="hp__faq-title">
+              Got<br />questions?
+            </h2>
+            <p className="hp__faq-sub">
+              Everything you need to know before we start working together.
+            </p>
+          </div>
+
+          {/* Right col — accordion */}
+          <div className="hp__faq-right">
+            {faqs.map((item, i) => (
+              <FaqItem key={i} q={item.q} a={item.a} />
+            ))}
+          </div>
+
         </div>
       </section>
     </>
