@@ -4,47 +4,57 @@ import ServiceModal from './ServiceModal'
 
 const SERVICES = [
   {
-    no: '01', title: 'LOGO & BRANDING', tag: 'Identity',
-    color: '#FF3C3C',
-    desc: 'Identity systems built to define and differentiate your brand across every touchpoint.',
-    img: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=380&q=80&auto=format&fit=crop',
+    no: '01', 
+    title: 'WEB DEVELOPMENT', 
+    tag: 'Digital',
+    color: '#667eea',
+    desc: 'Custom websites and web applications built with modern technologies. Fast, responsive, and designed to scale with your business.',
+    img: 'https://images.unsplash.com/photo-1547658719-da2b51169166?w=380&q=80&auto=format&fit=crop',
   },
   {
-    no: '02', title: 'WEB DESIGN', tag: 'Digital',
-    color: '#FFB830',
-    desc: 'Websites crafted with obsessive attention to detail — built to perform and built to impress.',
-    img: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=380&q=80&auto=format&fit=crop',
-  },
-  {
-    no: '03', title: 'MOBILE APP', tag: 'Product',
-    color: '#00E5CC',
-    desc: 'Native and cross-platform apps designed for clarity, speed, and real-world usability.',
-    img: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=380&q=80&auto=format&fit=crop',
-  },
-  {
-    no: '04', title: 'ILLUSTRATION', tag: 'Art',
-    color: '#A855F7',
-    desc: 'Custom illustrations that give your brand a distinct visual language and personality.',
+    no: '02', 
+    title: 'ILLUSTRATION', 
+    tag: 'Creative',
+    color: '#764ba2',
+    desc: 'Custom illustrations that bring your brand to life. From digital art to hand-drawn concepts, we create unique visual storytelling.',
     img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=380&q=80&auto=format&fit=crop',
   },
   {
-    no: '05', title: 'DEVELOPMENT', tag: 'Engineering',
-    color: '#4ADE80',
-    desc: 'Fast, modern, production-ready builds. Clean code that scales with your business.',
-    img: 'https://images.unsplash.com/photo-1555066931-4365d14431b9?w=380&q=80&auto=format&fit=crop',
+    no: '03', 
+    title: 'MOTION & VISUAL', 
+    tag: 'Animation',
+    color: '#c9a84c',
+    desc: 'Eye-catching motion graphics and visual effects. From animated logos to full video production, we make your content move.',
+    img: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?w=380&q=80&auto=format&fit=crop',
+  },
+  {
+    no: '04', 
+    title: 'PHOTOGRAPHY', 
+    tag: 'Visual',
+    color: '#a855f7',
+    desc: 'Professional photography services for products, events, and branding. Capturing moments that tell your story perfectly.',
+    img: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=380&q=80&auto=format&fit=crop',
   },
 ]
 
 const TESTIMONIALS = [
   {
-    name: 'Martin Rosser', role: 'CEO, Pentlar',
+    name: 'Michael Anderson', 
+    role: 'CEO, TechVision',
     avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&q=80&auto=format&fit=crop&crop=faces',
-    quote: 'We are very happy to work with such an amazing team. Our working experience is great — they have a deep understanding of our brand vision and values, and are able to present them in creative and impressive designs.',
+    quote: 'Brauss Networks delivered beyond our expectations. Their creative approach and technical expertise transformed our digital presence completely. The team is professional, responsive, and truly understands modern design.',
   },
   {
-    name: 'Sarah Chen', role: 'Founder, Arkon Studio',
+    name: 'Sarah Martinez', 
+    role: 'Marketing Director, Innovate Co',
     avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&q=80&auto=format&fit=crop&crop=faces',
-    quote: 'The team transformed our entire brand identity in just a few weeks. Professional, creative, and incredibly detail-oriented. The results exceeded every expectation we had going in.',
+    quote: 'Working with Brauss has been an absolute pleasure. From web development to visual content, every project is handled with exceptional creativity and attention to detail. They truly are a one-stop creative agency.',
+  },
+  {
+    name: 'David Chen', 
+    role: 'Founder, StartUp Hub',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&q=80&auto=format&fit=crop&crop=faces',
+    quote: 'The motion graphics and photography work they produced for our campaign was outstanding. Brauss Networks brings fresh ideas and flawless execution to every project. Highly recommended!',
   },
 ]
 
@@ -118,7 +128,7 @@ export default function Services() {
               <span className="sv__eyebrow-pip" />
               Our Services
             </p>
-            <h2 className="sv__heading">OUR AREA OF<br />SPECIALIZATION</h2>
+            <h2 className="sv__heading">CREATIVE SOLUTIONS<br />FOR YOUR BRAND</h2>
           </div>
           <p className="sv__header-count">
             <strong>{SERVICES.length}</strong> services available

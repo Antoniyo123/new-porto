@@ -1,11 +1,10 @@
 import { useRef, useEffect, useState } from 'react'
 import '../styles/About.css'
-import profilImg from "../assets/profil.jpg";
 
 const STATS = [
-  { num: '5+',  label: 'Years of craft'   },
-  { num: '80+', label: 'Projects shipped' },
-  { num: '3',   label: 'Design awards'    },
+  { num: '3+',  label: 'Years Experience'   },
+  { num: '50+', label: 'Projects Delivered' },
+  { num: '50+',   label: 'Happy Clients'    },
 ]
 
 const About = () => {
@@ -29,37 +28,39 @@ const About = () => {
     >
 
       {/* ── Eyebrow ── */}
-      <p className="ab__eyebrow">// About us</p>
+      <p className="ab__eyebrow">// About Brauss</p>
 
       {/* ── Headline ── */}
       <h2 className="ab__headline">
         We are a<br />
         <em>creative</em>{' '}
-        <span className="ab__outline">studio</span>
+        <span className="ab__outline">ecosystem</span>
       </h2>
 
       {/* ── Grid ── */}
       <div className="ab__grid">
 
-        {/* Photo */}
+        {/* Photo - Team/Agency workspace */}
         <div className="ab__photo-wrap">
-  <img
-    src={profilImg}
-    alt="Studio founder"
-    className="ab__photo"
-    loading="lazy"
-  />
-</div>
+          <img
+            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=80&auto=format&fit=crop"
+            alt="Brauss Networks creative team"
+            className="ab__photo"
+            loading="lazy"
+          />
+        </div>
 
         {/* Content */}
         <div className="ab__content">
 
           <p className="ab__body">
-            LXY Creative is a Jakarta-based studio founded in 2020. From
-            early-stage startups to established companies, we partner with
-            clients who care deeply about the details.{' '}
+            LXY Creative is a full-service creative agency specializing in 
+            web development, illustration, motion graphics, and photography. 
+            From concept to execution, we transform ideas into stunning visual 
+            experiences.{' '}
             <strong>
-              We don't just make things look good — we make them work beautifully.
+              We don't just create content — we craft stories that connect, 
+              engage, and inspire action.
             </strong>
           </p>
 
@@ -74,7 +75,7 @@ const About = () => {
           </div>
 
           {/* CTA */}
-          <a href="mailto:hello@lxy.co" className="ab__cta">
+          <a href="mailto:hello@braussnetworks.com" className="ab__cta">
             Start a project
             <span className="ab__cta-arrow">↗</span>
           </a>

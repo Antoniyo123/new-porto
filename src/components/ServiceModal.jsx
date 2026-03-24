@@ -1,118 +1,90 @@
 import { useEffect, useRef } from 'react'
 import '../styles/ServiceModal.css'
 
-/*
-  ServiceModal — slide-in detail panel
-  Props:
-    service  : object | null  — the selected service (null = closed)
-    onClose  : () => void     — called to dismiss
-*/
-
-// Per-service detail content
+// Per-service detail content untuk Brauss Networks
 const SERVICE_DETAILS = {
-  '01': {
+  '01': { // WEB DEVELOPMENT
     deliverables: [
-      'Logo & wordmark (primary + variations)',
-      'Brand colour palette & typography system',
-      'Brand guidelines document (PDF)',
-      'Business card & stationery design',
-      'Social media kit & templates',
-      'Brand pattern / texture assets',
+      'Responsive website (desktop, tablet, mobile)',
+      'Custom web application development',
+      'CMS integration (WordPress, Headless CMS)',
+      'E-commerce platform setup',
+      'SEO optimization & performance tuning',
+      'Post-launch support & maintenance',
     ],
     steps: [
-      { name: 'Discovery',   desc: 'Brand audit, competitor analysis, and target audience mapping.' },
-      { name: 'Concept',     desc: 'Mood boards and 2–3 distinct creative directions.' },
-      { name: 'Development', desc: 'Refine selected direction across all touchpoints.' },
-      { name: 'Delivery',    desc: 'Final files in all formats + brand guidelines handoff.' },
+      { name: 'Planning',     desc: 'Sitemap, wireframes, and technical architecture planning.' },
+      { name: 'Design',       desc: 'UI/UX design with brand integration and user flow optimization.' },
+      { name: 'Development',  desc: 'Clean code development with modern frameworks (React, Next.js).' },
+      { name: 'Launch',       desc: 'Testing, deployment, and comprehensive handoff documentation.' },
     ],
     stats: [
-      { num: '2–4',  lbl: 'Weeks' },
-      { num: '3',    lbl: 'Concepts' },
-      { num: '∞',    lbl: 'Revisions' },
-    ],
-  },
-  '02': {
-    deliverables: [
-      'UX wireframes & sitemap',
-      'Full visual design (desktop + mobile)',
-      'Interactive Figma prototype',
-      'Design system / component library',
-      'Developer handoff (Figma Inspect)',
-      'Post-launch design support',
-    ],
-    steps: [
-      { name: 'Research',  desc: 'User flows, competitor UX review, and content audit.' },
-      { name: 'Wireframe', desc: 'Low-fidelity layouts for every key screen.' },
-      { name: 'Design',    desc: 'High-fidelity screens with your brand system applied.' },
-      { name: 'Handoff',   desc: 'Annotated specs, assets, and dev-ready Figma file.' },
-    ],
-    stats: [
-      { num: '3–6',  lbl: 'Weeks' },
+      { num: '3–8',  lbl: 'Weeks' },
       { num: '100%', lbl: 'Responsive' },
-      { num: 'AA',   lbl: 'Accessible' },
+      { num: 'A+',   lbl: 'Performance' },
     ],
   },
-  '03': {
+  '02': { // ILLUSTRATION
     deliverables: [
-      'UX flows & user journey maps',
-      'iOS & Android screen designs',
-      'Interactive prototype (Figma)',
-      'Icon set & illustration assets',
-      'Design system (tokens + components)',
-      'App Store / Play Store assets',
+      'Custom digital illustrations (10–30 pieces)',
+      'Brand character & mascot design',
+      'Editorial & marketing illustrations',
+      'Social media graphics & templates',
+      'Infographic design & visualization',
+      'Full commercial usage rights',
     ],
     steps: [
-      { name: 'Define',    desc: 'User personas, core jobs-to-be-done, and feature scope.' },
-      { name: 'Structure', desc: 'Navigation architecture and key screen flows.' },
-      { name: 'UI Design', desc: 'Pixel-perfect screens for both platforms.' },
-      { name: 'Handoff',   desc: 'Component specs, motion notes, and dev assets.' },
+      { name: 'Concept',   desc: 'Style exploration, mood boards, and reference gathering.' },
+      { name: 'Sketching', desc: 'Initial concepts and composition layouts for approval.' },
+      { name: 'Rendering', desc: 'Full color illustration with final details and polish.' },
+      { name: 'Delivery',  desc: 'All formats (AI, SVG, PNG, PDF) and source files included.' },
     ],
     stats: [
-      { num: '4–8',  lbl: 'Weeks' },
-      { num: '2',    lbl: 'Platforms' },
-      { num: '60+',  lbl: 'Screens' },
+      { num: '2–6',  lbl: 'Weeks' },
+      { num: '100%', lbl: 'Original' },
+      { num: 'Vector', lbl: 'Format' },
     ],
   },
-  '04': {
+  '03': { // MOTION & VISUAL
     deliverables: [
-      'Custom illustration set (5–20 pieces)',
-      'Brand character / mascot design',
-      'Icon system (SVG + PNG)',
-      'Scene & editorial illustrations',
-      'Animation-ready layered files',
-      'Full usage license',
+      'Animated logo & brand identity',
+      'Explainer video & product demos',
+      'Social media video content',
+      'Motion graphics & visual effects',
+      'Video editing & color grading',
+      'Multiple format exports (MP4, MOV, GIF)',
     ],
     steps: [
-      { name: 'Brief',   desc: 'Style direction, references, and usage context.' },
-      { name: 'Sketch',  desc: 'Rough compositions shared for early feedback.' },
-      { name: 'Refine',  desc: 'Colour, detail, and final polish.' },
-      { name: 'Deliver', desc: 'All formats — SVG, PNG, PDF, and source files.' },
+      { name: 'Storyboard', desc: 'Script development, storyboarding, and animation planning.' },
+      { name: 'Animation',  desc: 'Motion design, character animation, and visual effects.' },
+      { name: 'Sound',      desc: 'Sound design, music selection, and audio mixing.' },
+      { name: 'Export',     desc: 'Final render in all required formats and resolutions.' },
     ],
     stats: [
-      { num: '2–5',  lbl: 'Weeks' },
-      { num: '100%', lbl: 'Custom' },
-      { num: 'SVG',  lbl: 'Format' },
+      { num: '2–8',  lbl: 'Weeks' },
+      { num: '4K',   lbl: 'Quality' },
+      { num: '60fps', lbl: 'Smooth' },
     ],
   },
-  '05': {
+  '04': { // PHOTOGRAPHY
     deliverables: [
-      'React / Next.js frontend build',
-      'CMS integration (Sanity, Contentful)',
-      'Performance-optimised codebase',
-      'SEO & metadata setup',
-      'Deployment (Vercel / Netlify)',
-      '30-day post-launch support',
+      'Professional photo shoot (100+ shots)',
+      'Product photography & styling',
+      'Event & corporate photography',
+      'Photo retouching & color correction',
+      'High-resolution RAW + edited files',
+      'Full commercial usage license',
     ],
     steps: [
-      { name: 'Setup',   desc: 'Tech stack selection, repo, and CI/CD pipeline.' },
-      { name: 'Build',   desc: 'Component-driven development from approved designs.' },
-      { name: 'QA',      desc: 'Cross-browser, device, and accessibility testing.' },
-      { name: 'Launch',  desc: 'Deploy, monitor, and hand over documentation.' },
+      { name: 'Planning',   desc: 'Shot list creation, location scouting, and scheduling.' },
+      { name: 'Shoot',      desc: 'Professional photography session with lighting & direction.' },
+      { name: 'Selection',  desc: 'Photo culling and selection of best shots for editing.' },
+      { name: 'Editing',    desc: 'Professional retouching, color grading, and final delivery.' },
     ],
     stats: [
-      { num: '4–8',  lbl: 'Weeks' },
-      { num: '100',  lbl: 'Perf score' },
-      { num: 'MIT',  lbl: 'License' },
+      { num: '1–3',  lbl: 'Days' },
+      { num: '100+', lbl: 'Photos' },
+      { num: 'RAW',  lbl: 'Format' },
     ],
   },
 }
@@ -155,7 +127,7 @@ export default function ServiceModal({ service, onClose }) {
         role="dialog"
         aria-modal="true"
         aria-label={service ? `${service.title} service details` : 'Service details'}
-        style={{ '--svm-color': service?.color ?? '#ff3c3c' }}
+        style={{ '--svm-color': service?.color ?? '#667eea' }}
       >
         {/* Accent line */}
         <div className="svm__accent" />
@@ -188,7 +160,7 @@ export default function ServiceModal({ service, onClose }) {
 
                 {/* No + Tag */}
                 <div className="svm__meta-row">
-                  <span className="svm__no">{service.no} / 05</span>
+                  <span className="svm__no">{service.no} / 04</span>
                   <span className="svm__tag">{service.tag}</span>
                 </div>
 
@@ -228,7 +200,7 @@ export default function ServiceModal({ service, onClose }) {
                 {/* Process steps */}
                 {detail && (
                   <>
-                    <p className="svm__section-label">How it works</p>
+                    <p className="svm__section-label">Our process</p>
                     <div className="svm__steps">
                       {detail.steps.map((s, i) => (
                         <div className="svm__step" key={i}>
@@ -251,9 +223,9 @@ export default function ServiceModal({ service, onClose }) {
         {/* Sticky footer CTA */}
         <div className="svm__footer">
           <p className="svm__footer-text">
-            Interested in this service? Let's talk about your project.
+            Ready to bring your vision to life? Let's discuss your project.
           </p>
-          <a href="mailto:hello@lxy.co" className="svm__cta">
+          <a href="mailto:hello@braussnetworks.com" className="svm__cta">
             Get a quote
             <svg width="12" height="12" viewBox="0 0 20 20" fill="none">
               <path d="M4 16L16 4M16 4H7M16 4v9" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
