@@ -27,8 +27,6 @@ const About = () => {
       className={`ab__section${visible ? ' ab__section--in' : ''}`}
     >
 
-      {/* ── Eyebrow ── */}
-      <p className="ab__eyebrow">// About Brauss</p>
 
       {/* ── Headline ── */}
       <h2 className="ab__headline">

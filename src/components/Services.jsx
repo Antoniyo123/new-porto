@@ -124,10 +124,7 @@ export default function Services() {
         {/* ── Header ── */}
         <div className="sv__header">
           <div className="sv__header-left">
-            <p className="sv__eyebrow">
-              <span className="sv__eyebrow-pip" />
-              Our Services
-            </p>
+          
             <h2 className="sv__heading">CREATIVE SOLUTIONS<br />FOR YOUR BRAND</h2>
           </div>
           <p className="sv__header-count">
