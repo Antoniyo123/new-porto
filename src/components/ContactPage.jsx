@@ -66,7 +66,7 @@ export default function ContactPage() {
             <div className="ct__hero-strip-item">
               <span className="ct__hero-strip-label">Email</span>
               <span className="ct__hero-strip-val">
-                <a href="mailto:hello@lxy.co">hello@lxy.co</a>
+                <a href="mailto:alexjor1997@gmail.com">alexjor1997@gmail.com</a>
               </span>
             </div>
             <div className="ct__hero-strip-item">
@@ -182,8 +182,8 @@ export default function ContactPage() {
               No lengthy briefs required upfront. Just tell us what you're
               working on and where you're at — we'll take it from there.
             </p>
-            <a href="mailto:hello@lxy.co" className="ct__bottom-email">
-              hello@lxy.co
+            <a href="mailto:alexjor1997@gmail.com" className="ct__bottom-email">
+              alexjor1997@gmail.com
               <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
                 <path d="M4 16L16 4M16 4H7M16 4v9" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>

@@ -116,7 +116,7 @@ export default function AboutPage() {
               and established brands who believe that great design is not
               decoration — it is strategy made visible.
             </p>
-            <a href="mailto:hello@lxy.co" className="abt__hero-intro-cta">
+            <a href="mailto:alexjor1997@gmail.com" className="abt__hero-intro-cta">
               Start a conversation
               <svg width="12" height="12" viewBox="0 0 20 20" fill="none">
                 <path d="M4 16L16 4M16 4H7M16 4v9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -300,7 +300,7 @@ export default function AboutPage() {
           </p>
           <div className="abt__bottom-actions">
             <a href="mailto:hello@lxy.co" className="abt__bottom-btn">
-              hello@lxy.co
+              alexjor1997@gmail.com
               <svg width="13" height="13" viewBox="0 0 20 20" fill="none">
                 <path d="M4 16L16 4M16 4H7M16 4v9" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import '../styles/Footer.css'
 
-const NAV_LINKS = ['Work', 'Services', 'About', 'Journal', 'Contact']
+const NAV_LINKS = ['Project', 'Services', 'About', 'Contact']
 
 const META = [
   { label: 'Status',   val: 'Available',    on: true  },
@@ -115,7 +115,7 @@ export default function Footer() {
 
       {/* ── Mid row ── */}
       <div className="footer__mid">
-        <span className="footer__brand">LXY.</span>
+        <span className="footer__brand">LXY</span>
 
         <nav className="footer__nav" aria-label="Footer navigation">
           {NAV_LINKS.map(l => (
