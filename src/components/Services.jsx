@@ -247,7 +247,7 @@ export default function Services() {
 
         {/* ── Testimonial ── */}
         <div className="sv__testimonial">
-          <div className="sv__t-left">
+          {/* <div className="sv__t-left">
             <div className="sv__t-avatar-wrap">
               <img className="sv__t-avatar" src={t.avatar} alt={t.name} />
             </div>
@@ -274,7 +274,7 @@ export default function Services() {
             <p className={`sv__t-quote${tFading ? ' sv__t-quote--out' : ''}`}>
               {t.quote}
             </p>
-          </div>
+          </div> */}
         </div>
       </section>
 
