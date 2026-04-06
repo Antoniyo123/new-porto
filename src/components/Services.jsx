@@ -59,14 +59,22 @@ const TESTIMONIALS = [
 ]
 
 export default function Services() {
-  const [active,   setActive]   = useState(null)
-  const [visible,  setVisible]  = useState(false)
-  const [tIdx,     setTIdx]     = useState(0)
-  const [tFading,  setTFading]  = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
-  const [modalSvc, setModalSvc] = useState(null)
-  const ref = useRef(null)
+  const [active,      setActive]      = useState(null)
+  const [visible,     setVisible]     = useState(false)
+  const [tIdx,        setTIdx]        = useState(0)
+  const [tFading,     setTFading]     = useState(false)
+  const [isMobile,    setIsMobile]    = useState(false)
+  const [modalSvc,    setModalSvc]    = useState(null)
+  const [cursorPos,   setCursorPos]   = useState({ x: 0, y: 0 })
+  const [cursorOn,    setCursorOn]    = useState(false)  // visible inside list area
+  const [cursorActive, setCursorActive] = useState(false) // hovering a specific item
 
+  const ref       = useRef(null)
+  const cursorRef = useRef(null)
+  const rafRef    = useRef(null)
+  const posRef    = useRef({ x: 0, y: 0 })
+
+  /* ── Detect mobile / touch ── */
   useEffect(() => {
     const check = () => setIsMobile(
       window.matchMedia('(hover: none)').matches || window.innerWidth <= 960
@@ -76,6 +84,7 @@ export default function Services() {
     return () => window.removeEventListener('resize', check)
   }, [])
 
+  /* ── Intersection observer ── */
   useEffect(() => {
     const obs = new IntersectionObserver(
       ([e]) => { if (e.isIntersecting) setVisible(true) },
@@ -85,6 +94,28 @@ export default function Services() {
     return () => obs.disconnect()
   }, [])
 
+  /* ── Smooth cursor via rAF ── */
+  useEffect(() => {
+    if (isMobile) return
+
+    const onMove = (e) => {
+      posRef.current = { x: e.clientX, y: e.clientY }
+    }
+    window.addEventListener('mousemove', onMove)
+
+    const loop = () => {
+      setCursorPos({ ...posRef.current })
+      rafRef.current = requestAnimationFrame(loop)
+    }
+    rafRef.current = requestAnimationFrame(loop)
+
+    return () => {
+      window.removeEventListener('mousemove', onMove)
+      cancelAnimationFrame(rafRef.current)
+    }
+  }, [isMobile])
+
+  /* ── Testimonial helpers ── */
   const switchTo = (next) => {
     if (next === tIdx) return
     setTFading(true)
@@ -95,12 +126,26 @@ export default function Services() {
   const next = () => switchTo((tIdx + 1) % TESTIMONIALS.length)
   const t = TESTIMONIALS[tIdx]
 
-  const handleMouseEnter = (i) => { if (!isMobile) setActive(i) }
-  const handleMouseLeave = ()  => { if (!isMobile) setActive(null) }
+  /* ── Service item interactions ── */
+  const handleMouseEnter = (i) => {
+    if (!isMobile) {
+      setActive(i)
+      setCursorActive(true)
+    }
+  }
+
+  const handleMouseLeave = () => {
+    if (!isMobile) {
+      setActive(null)
+      setCursorActive(false)
+    }
+  }
+
+  const handleListEnter = () => { if (!isMobile) setCursorOn(true) }
+  const handleListLeave = () => { if (!isMobile) { setCursorOn(false); setCursorActive(false) } }
 
   const handleItemClick = (i, s) => {
     if (isMobile) {
-      // First tap → expand accordion. Second tap → open modal.
       if (active === i) {
         setModalSvc(s)
       } else {
@@ -114,8 +159,30 @@ export default function Services() {
   const openModal  = useCallback((s) => setModalSvc(s), [])
   const closeModal = useCallback(() => setModalSvc(null), [])
 
+  /* ── Cursor class ── */
+  const cursorClass = [
+    'sv__cursor',
+    cursorOn    ? 'sv__cursor--visible' : '',
+    cursorActive ? 'sv__cursor--active'  : '',
+  ].filter(Boolean).join(' ')
+
   return (
     <>
+      {/* ── Custom cursor — rendered at root level so it's always on top ── */}
+      {!isMobile && (
+        <div
+          ref={cursorRef}
+          className={cursorClass}
+          style={{
+            transform: `translate(calc(${cursorPos.x}px - 50%), calc(${cursorPos.y}px - 50%))`,
+          }}
+          aria-hidden="true"
+        >
+          <span className="sv__cursor-dot" />
+          <span className="sv__cursor-label">Lihat Selengkapnya</span>
+        </div>
+      )}
+
       <section
         id="services"
         ref={ref}
@@ -124,7 +191,6 @@ export default function Services() {
         {/* ── Header ── */}
         <div className="sv__header">
           <div className="sv__header-left">
-          
             <h2 className="sv__heading">CREATIVE SOLUTIONS<br />FOR YOUR BRAND</h2>
           </div>
           <p className="sv__header-count">
@@ -133,7 +199,11 @@ export default function Services() {
         </div>
 
         {/* ── Service rows ── */}
-        <div className="sv__list">
+        <div
+          className="sv__list"
+          onMouseEnter={handleListEnter}
+          onMouseLeave={handleListLeave}
+        >
           {SERVICES.map((s, i) => (
             <div
               key={s.no}

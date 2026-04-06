@@ -88,7 +88,7 @@
 .sv__item {
   position: relative;
   border-bottom: 1px solid var(--line);
-  cursor: pointer;
+  cursor: none; /* hide default cursor — custom takes over */
   overflow: visible;
 }
 
@@ -260,6 +260,81 @@
   align-self: start;
 }
 
+.sv__mobile-detail-btn {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--red);
+  background: transparent;
+  border: 1px solid var(--red);
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  align-self: start;
+}
+.sv__mobile-detail-btn:hover {
+  background: var(--red);
+  color: #fff;
+}
+
+
+/* ══════════════════════════════════
+   CUSTOM CURSOR — desktop only
+══════════════════════════════════ */
+.sv__cursor {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s var(--ease);
+  opacity: 0;
+  will-change: transform;
+}
+
+.sv__cursor--visible {
+  opacity: 1;
+}
+
+/* The dot */
+.sv__cursor-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff3c3c;
+  flex-shrink: 0;
+  transition: transform 0.25s var(--ease);
+}
+
+.sv__cursor--active .sv__cursor-dot {
+  transform: scale(1.5);
+}
+
+/* The label pill */
+.sv__cursor-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #fff;
+  background: #080808;
+  padding: 5px 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.25s var(--ease), transform 0.3s var(--ease);
+}
+
+.sv__cursor--active .sv__cursor-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 
 /* ══════════════════════════════════
    TESTIMONIAL
@@ -380,7 +455,7 @@
 
   /* Header */
   .sv__header { padding: 64px var(--pad-x) 44px; gap: 24px; }
-  .sv__header-count { display: none; } /* Save space — count is implied */
+  .sv__header-count { display: none; }
 
   /* Row grid: no desc column on tablet */
   .sv__item-inner {
@@ -396,9 +471,15 @@
   /* Show mobile accordion */
   .sv__mobile-panel { display: block; }
 
+  /* Restore default cursor on mobile/tablet */
+  .sv__item { cursor: pointer; }
+
+  /* Hide custom cursor on touch devices */
+  .sv__cursor { display: none; }
+
   /* Arrow becomes a plus/minus indicator on mobile */
   .sv__item.sv__item--on .sv__arrow {
-    transform: rotate(45deg); /* × shape when open */
+    transform: rotate(45deg);
   }
 
   /* Testimonial: stack left + right */
@@ -408,7 +489,6 @@
     padding: 56px var(--pad-x);
   }
 
-  /* On mobile testimonial: put avatar + name + nav in a row */
   .sv__t-left {
     flex-direction: row;
     align-items: center;
@@ -445,14 +525,12 @@
 
   .sv__heading { font-size: clamp(20px, 6.5vw, 52px); }
 
-  /* Row: number + title + arrow only */
   .sv__item-inner {
     grid-template-columns: 36px 1fr auto;
     gap: 12px;
     padding: 18px var(--pad-x);
   }
 
-  /* Hide tag on small mobile — cluttered */
   .sv__tag { display: none; }
 
   .sv__title { font-size: clamp(20px, 5vw, 32px); white-space: normal; }
@@ -461,7 +539,6 @@
 
   .sv__arrow { width: 32px; height: 32px; }
 
-  /* Accordion panel — full width image on small mobile */
   .sv__mobile-panel-inner {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto;
@@ -477,7 +554,6 @@
 
   .sv__mobile-tag { display: block; }
 
-  /* Testimonial */
   .sv__testimonial { padding: 48px var(--pad-x); gap: 28px; }
 
   .sv__t-left { gap: 12px; }
@@ -486,7 +562,7 @@
 
   .sv__t-quote { font-size: 13px; line-height: 1.9; }
 
-  .sv__t-btn { width: 40px; height: 40px; } /* larger tap target */
+  .sv__t-btn { width: 40px; height: 40px; }
 }
 
 
