@@ -14,18 +14,43 @@ import WorkPage    from './components/WorkPage'
 import AboutPage   from './components/AboutPage'
 import ContactPage from './components/ContactPage'
 
-/* ── Page content wrapper — fades in after curtain enters ── */
-const SLIDE_IN = 550  // must match PageLoader.jsx SLIDE_IN value
+const SLIDE_IN = 550
+const STAGGER  = 120
+const BASE     = 80
 
+/* ── RevealItem — fade + slide-up with delay ── */
+function RevealItem({ children, delay = 0, loaded }) {
+  const [triggered, setTriggered] = useState(false)
+
+  useEffect(() => {
+    if (!loaded) return
+    const t = setTimeout(() => setTriggered(true), delay)
+    return () => clearTimeout(t)
+  }, [loaded, delay])
+
+  return (
+    <div
+      style={{
+        opacity:    triggered ? 1 : 0,
+        transform:  triggered ? 'translateY(0px)' : 'translateY(32px)',
+        transition: triggered
+          ? 'opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1)'
+          : 'none',
+        willChange: 'opacity, transform',
+      }}
+    >
+      {children}
+    </div>
+  )
+}
+
+/* ── Page content wrapper — fades in after curtain enters ── */
 function PageContent({ children }) {
   const location = useLocation()
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    // Hide instantly on route change
     setVisible(false)
-
-    // Reveal only after the curtain has fully covered the screen
     const t = setTimeout(() => setVisible(true), SLIDE_IN + 20)
     return () => clearTimeout(t)
   }, [location.pathname])
@@ -43,14 +68,14 @@ function PageContent({ children }) {
 }
 
 /* ── Home layout ── */
-function Home() {
+function Home({ loaded }) {
   return (
     <>
-      <Hero />
-      <About />
-      <Services />
-      <Projects />
-      <Footer />
+      <RevealItem loaded={loaded} delay={BASE + STAGGER * 0}><Hero /></RevealItem>
+      <RevealItem loaded={loaded} delay={BASE + STAGGER * 1}><About /></RevealItem>
+      <RevealItem loaded={loaded} delay={BASE + STAGGER * 2}><Services /></RevealItem>
+      <RevealItem loaded={loaded} delay={BASE + STAGGER * 3}><Projects /></RevealItem>
+      <RevealItem loaded={loaded} delay={BASE + STAGGER * 4}><Footer /></RevealItem>
     </>
   )
 }
@@ -65,15 +90,21 @@ function App() {
         <Preloader onComplete={() => setLoaded(true)} />
         <PageLoader />
 
+        {/* ⚠️ Navbar TIDAK dibungkus RevealItem — fixed/sticky element
+            tidak boleh punya parent dengan opacity transform karena
+            akan membuat stacking context baru & merusak positioning.
+            Cukup pakai visibility dari loaded state. */}
         <div style={{ visibility: loaded ? 'visible' : 'hidden' }}>
           <Navbar />
+        </div>
 
+        <div style={{ visibility: loaded ? 'visible' : 'hidden' }}>
           <PageContent>
             <Routes>
-              <Route path="/"        element={<Home />}        />
-              <Route path="/projects" element={<WorkPage />}   />
-              <Route path="/about"   element={<AboutPage />}   />
-              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/"         element={<Home loaded={loaded} />} />
+              <Route path="/projects" element={<WorkPage />}             />
+              <Route path="/about"    element={<AboutPage />}            />
+              <Route path="/contact"  element={<ContactPage />}          />
             </Routes>
           </PageContent>
         </div>
