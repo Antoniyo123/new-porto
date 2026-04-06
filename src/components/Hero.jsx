@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../styles/Hero.css';
 import { Link } from "react-router-dom";
 
-const BRANDS = ['PAPERZ', 'Dorfus', 'Martino', 'square', 'Gobona'];
+const BRANDS = ['KacaCreative', 'IndoBizCorner', 'BaliArtisan', 'SaromaseCo', 'Merantau.com', 'PilarTrust'];
 
 const Hero = () => {
   const [mounted, setMounted] = useState(false);
@@ -131,14 +131,20 @@ const Hero = () => {
       </section>
 
       {/* ── LOGOS STRIP ── */}
-      <div className="hr__logos">
-        <span className="hr__logos-label">Trusted by</span>
-        <div className="hr__logos-track">
-          {BRANDS.map(b => (
-            <span key={b} className="hr__logos-item">{b}</span>
-          ))}
-        </div>
-      </div>
+      {/* ── LOGOS STRIP ── */}
+<div className="hr__logos">
+  <span className="hr__logos-label">Trusted by</span>
+  <div className="hr__logos-track">
+    <div className="hr__logos-marquee">
+      {[...BRANDS, ...BRANDS].map((b, i) => (
+        <span key={i} className="hr__logos-item">
+          {b}
+          <span className="hr__logos-sep" aria-hidden="true">✦</span>
+        </span>
+      ))}
+    </div>
+  </div>
+</div>
     </div>
   );
 };
