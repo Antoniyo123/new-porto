@@ -23,6 +23,81 @@ const SERVICE_DETAILS = {
       { num: '100%', lbl: 'Responsive' },
       { num: 'A+',   lbl: 'Performance' },
     ],
+    packages: [
+      {
+        id: 'basic',
+        name: 'PAKET BASIC',
+        subtitle: 'Starter Portfolio',
+        price: 'Start from Rp 3.000.000',
+        features: [
+          '1 halaman (Landing Page)',
+          'About, Skills, Portfolio, Contact',
+          'Responsive (mobile friendly)',
+          'Integrasi WhatsApp / Email',
+          'Clean modern design (template-based)',
+        ],
+        includes: [
+          'Hosting (Vercel – cepat & aman)',
+        ],
+        excludes: [
+          'Domain',
+        ],
+      },
+      {
+        id: 'professional',
+        name: 'PAKET PROFESSIONAL',
+        subtitle: 'Personal Branding',
+        price: 'Rp 5.000.000 – Rp 8.000.000',
+        features: [
+          '3–5 halaman (Home, About, Services, Portfolio, Contact)',
+          'Custom design (branding lebih kuat)',
+          'Animasi smooth & modern',
+          'SEO basic',
+          'Integrasi WhatsApp & Instagram',
+          'Form inquiry (lead masuk)',
+        ],
+        includes: [
+          'Hosting (Vercel)',
+          'Copywriting basic',
+          'Revisi 2x',
+        ],
+        excludes: [
+          'Domain',
+        ],
+      },
+      {
+        id: 'premium',
+        name: 'PAKET PREMIUM',
+        subtitle: 'High Value Portfolio / Company Profile',
+        price: 'Rp 9.000.000 – Rp 20.000.000',
+        features: [
+          'Unlimited halaman',
+          'Full custom design (exclusive & high-end)',
+          'Advanced animation (cinematic feel)',
+          'CMS (editable sendiri)',
+          'SEO advanced',
+          'Analytics & tracking',
+          'Lead generation funnel',
+        ],
+        includes: [
+          'Hosting (Vercel – global CDN)',
+          'Copywriting profesional',
+          'Strategi branding',
+          'Revisi unlimited (fair use)',
+        ],
+        excludes: [
+          'Domain',
+        ],
+      },
+    ],
+    addOns: [
+      { name: 'Domain (.com, .id, dll)', price: 'Rp 150.000 – Rp 300.000 / tahun' },
+      { name: 'Foto profesional', price: 'Rp 500.000 – Rp 2.000.000' },
+      { name: 'Copywriting premium', price: 'Rp 1.000.000 – Rp 3.000.000' },
+      { name: 'SEO lanjutan', price: 'Rp 2.000.000 – Rp 5.000.000' },
+      { name: 'Video cinematic', price: 'Rp 2.000.000 – Rp 10.000.000' },
+    ],
+    note: 'Website sudah termasuk hosting menggunakan Vercel (server global, cepat, aman). Domain dibeli terpisah sesuai kebutuhan brand.',
   },
   '02': { // ILLUSTRATION
     deliverables: [
@@ -179,6 +254,92 @@ export default function ServiceModal({ service, onClose }) {
                         <span className="svm__stat-lbl">{s.lbl}</span>
                       </div>
                     ))}
+                  </div>
+                )}
+
+                {/* Packages Section (Web Development only) */}
+                {detail && detail.packages && (
+                  <>
+                    <p className="svm__section-label">Pilihan Paket</p>
+                    <div className="svm__packages">
+                      {detail.packages.map((pkg) => (
+                        <div className="svm__package" key={pkg.id}>
+                          <div className="svm__package-header">
+                            <div>
+                              <h3 className="svm__package-name">{pkg.name}</h3>
+                              <p className="svm__package-subtitle">{pkg.subtitle}</p>
+                            </div>
+                            <div className="svm__package-price">{pkg.price}</div>
+                          </div>
+
+                          <div className="svm__package-body">
+                            {/* Features */}
+                            <div className="svm__package-section">
+                              <p className="svm__package-section-label">Fitur:</p>
+                              <ul className="svm__package-list">
+                                {pkg.features.map((feature, i) => (
+                                  <li key={i}>
+                                    <span className="svm__package-bullet">•</span>
+                                    {feature}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            {/* Includes */}
+                            <div className="svm__package-section">
+                              <p className="svm__package-section-label">Include:</p>
+                              <ul className="svm__package-list">
+                                {pkg.includes.map((item, i) => (
+                                  <li key={i}>
+                                    <span className="svm__package-bullet">✓</span>
+                                    {item}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            {/* Excludes */}
+                            {pkg.excludes.length > 0 && (
+                              <div className="svm__package-section">
+                                <p className="svm__package-section-label">Exclude:</p>
+                                <ul className="svm__package-list">
+                                  {pkg.excludes.map((item, i) => (
+                                    <li key={i}>
+                                      <span className="svm__package-bullet">✗</span>
+                                      {item}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {/* Add-ons Section (Web Development only) */}
+                {detail && detail.addOns && (
+                  <>
+                    <p className="svm__section-label">Add-on Services</p>
+                    <div className="svm__addons">
+                      {detail.addOns.map((addon, i) => (
+                        <div className="svm__addon" key={i}>
+                          <span className="svm__addon-name">{addon.name}</span>
+                          <span className="svm__addon-price">{addon.price}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {/* Note Section */}
+                {detail && detail.note && (
+                  <div className="svm__note">
+                    <p className="svm__note-label">💡 Catatan:</p>
+                    <p className="svm__note-text">{detail.note}</p>
                   </div>
                 )}
 
