@@ -7,7 +7,6 @@ const SERVICE_DETAILS = {
     deliverables: [
       'Responsive website (desktop, tablet, mobile)',
       'Custom web application development',
-      'CMS integration (WordPress, Headless CMS)',
       'E-commerce platform setup',
       'SEO optimization & performance tuning',
       'Post-launch support & maintenance',
@@ -29,6 +28,7 @@ const SERVICE_DETAILS = {
         name: 'PAKET BASIC',
         subtitle: 'Starter Portfolio',
         price: 'Start from Rp 3.000.000',
+        timeline: '2–3 minggu',
         features: [
           '1 halaman (Landing Page)',
           'About, Skills, Portfolio, Contact',
@@ -42,12 +42,17 @@ const SERVICE_DETAILS = {
         excludes: [
           'Domain',
         ],
+        payment: [
+          { milestone: 'Approval', percentage: 50 },
+          { milestone: 'Launch', percentage: 50 },
+        ],
       },
       {
         id: 'professional',
         name: 'PAKET PROFESSIONAL',
         subtitle: 'Personal Branding',
         price: 'Rp 5.000.000 – Rp 8.000.000',
+        timeline: '4–5 minggu',
         features: [
           '3–5 halaman (Home, About, Services, Portfolio, Contact)',
           'Custom design (branding lebih kuat)',
@@ -64,14 +69,19 @@ const SERVICE_DETAILS = {
         excludes: [
           'Domain',
         ],
+        payment: [
+          { milestone: 'Approval', percentage: 50 },
+          { milestone: 'Launch', percentage: 50 },
+        ],
       },
       {
         id: 'premium',
         name: 'PAKET PREMIUM',
         subtitle: 'High Value Portfolio / Company Profile',
         price: 'Rp 9.000.000 – Rp 20.000.000',
+        timeline: '8–12 minggu',
         features: [
-          'Unlimited halaman',
+          'Halaman tak terbatas (sesuai kebutuhan)',
           'Full custom design (exclusive & high-end)',
           'Advanced animation (cinematic feel)',
           'CMS (editable sendiri)',
@@ -83,21 +93,23 @@ const SERVICE_DETAILS = {
           'Hosting (Vercel – global CDN)',
           'Copywriting profesional',
           'Strategi branding',
-          'Revisi unlimited (fair use)',
+          'Revisi 8x (fair use)',
         ],
         excludes: [
           'Domain',
+        ],
+        payment: [
+          { milestone: 'Approval', percentage: 50 },
+          { milestone: 'Launch', percentage: 50 },
         ],
       },
     ],
     addOns: [
       { name: 'Domain (.com, .id, dll)', price: 'Rp 150.000 – Rp 300.000 / tahun' },
-      { name: 'Foto profesional', price: 'Rp 500.000 – Rp 2.000.000' },
       { name: 'Copywriting premium', price: 'Rp 1.000.000 – Rp 3.000.000' },
       { name: 'SEO lanjutan', price: 'Rp 2.000.000 – Rp 5.000.000' },
-      { name: 'Video cinematic', price: 'Rp 2.000.000 – Rp 10.000.000' },
     ],
-    note: 'Website sudah termasuk hosting menggunakan Vercel (server global, cepat, aman). Domain dibeli terpisah sesuai kebutuhan brand.',
+    note: 'Website sudah termasuk hosting menggunakan Vercel (server global, cepat, aman). Domain dibeli terpisah sesuai kebutuhan brand. Pembayaran awal minimal 50% untuk memulai project, sisanya saat launch.',
   },
   '02': { // ILLUSTRATION
     deliverables: [
@@ -285,6 +297,29 @@ export default function ServiceModal({ service, onClose }) {
                                 ))}
                               </ul>
                             </div>
+
+                            {/* Timeline */}
+                            {pkg.timeline && (
+                              <div className="svm__package-section">
+                                <p className="svm__package-section-label">Lama Pengerjaan:</p>
+                                <p className="svm__package-timeline">{pkg.timeline}</p>
+                              </div>
+                            )}
+
+                            {/* Payment Terms */}
+                            {pkg.payment && (
+                              <div className="svm__package-section">
+                                <p className="svm__package-section-label">Pembayaran:</p>
+                                <ul className="svm__package-list">
+                                  {pkg.payment.map((p, i) => (
+                                    <li key={i}>
+                                      <span className="svm__package-bullet">{p.percentage}%</span>
+                                      {p.milestone}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
 
                             {/* Includes */}
                             <div className="svm__package-section">
