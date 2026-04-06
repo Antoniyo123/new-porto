@@ -220,7 +220,7 @@ export default function AboutPage() {
       </section>
 
       {/* ════ TEAM ════ */}
-      <section className="abt__team">
+      {/* <section className="abt__team">
         <div className="abt__team-header">
           <div>
             <p className="abt__label">The people</p>
@@ -258,7 +258,7 @@ export default function AboutPage() {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* ════ PROCESS ════ */}
       <section className="abt__process">
