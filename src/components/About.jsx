@@ -4,12 +4,14 @@ import '../styles/About.css'
 const STATS = [
   { num: '3+',  label: 'Years Experience'   },
   { num: '50+', label: 'Projects Delivered' },
-  { num: '50+',   label: 'Happy Clients'    },
+  { num: '50+', label: 'Happy Clients'      },
 ]
 
 const About = () => {
-  const [visible, setVisible] = useState(false)
-  const ref = useRef(null)
+  const [visible,    setVisible]    = useState(false)
+  const [cursor,     setCursor]     = useState({ x: 0, y: 0, show: false })
+  const ref     = useRef(null)
+  const rafRef  = useRef(null)
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -20,6 +22,16 @@ const About = () => {
     return () => obs.disconnect()
   }, [])
 
+  const handleMouseMove = (e) => {
+    cancelAnimationFrame(rafRef.current)
+    rafRef.current = requestAnimationFrame(() => {
+      setCursor(prev => ({ ...prev, x: e.clientX, y: e.clientY }))
+    })
+  }
+
+  const handleMouseEnter = () => setCursor(prev => ({ ...prev, show: true }))
+  const handleMouseLeave = () => setCursor(prev => ({ ...prev, show: false }))
+
   return (
     <section
       id="about"
@@ -27,6 +39,17 @@ const About = () => {
       className={`ab__section${visible ? ' ab__section--in' : ''}`}
     >
 
+      {/* Custom cursor */}
+      <div
+        className={`ab__cursor${cursor.show ? ' ab__cursor--show' : ''}`}
+        style={{
+          left: cursor.x,
+          top:  cursor.y,
+        }}
+        aria-hidden="true"
+      >
+        Not Clickable
+      </div>
 
       {/* ── Headline ── */}
       <h2 className="ab__headline">
@@ -38,11 +61,11 @@ const About = () => {
       {/* ── Grid ── */}
       <div className="ab__grid">
 
-        {/* Photo - Team/Agency workspace */}
+        {/* Photo */}
         <div className="ab__photo-wrap">
           <img
             src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=80&auto=format&fit=crop"
-            alt="Brauss Networks creative team"
+            alt="LXY Creative team"
             className="ab__photo"
             loading="lazy"
           />
@@ -65,7 +88,13 @@ const About = () => {
           {/* Stats */}
           <div className="ab__stats">
             {STATS.map(s => (
-              <div key={s.label} className="ab__stat">
+              <div
+                key={s.label}
+                className="ab__stat"
+                onMouseMove={handleMouseMove}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
                 <span className="ab__stat-num">{s.num}</span>
                 <span className="ab__stat-lbl">{s.label}</span>
               </div>
@@ -73,7 +102,7 @@ const About = () => {
           </div>
 
           {/* CTA */}
-          <a href="mailto:hello@braussnetworks.com" className="ab__cta">
+          <a href="mailto:hello@lxycreative.com" className="ab__cta">
             Start a project
             <span className="ab__cta-arrow">↗</span>
           </a>

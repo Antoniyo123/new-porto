@@ -110,6 +110,7 @@ function FaqItem({ q, a }) {
 
 export default function HorizontalProjects() {
   const spacerRef = useRef(null)
+  const rafRef    = useRef(null)
 
   const [panelOpacity,  setPanelOpacity]  = useState(0)
   const [panelTransY,   setPanelTransY]   = useState(20)
@@ -120,6 +121,10 @@ export default function HorizontalProjects() {
   const [nextVisible,   setNextVisible]   = useState(false)
   const [spacerH,       setSpacerH]       = useState(5000)
   const [cardP,         setCardP]         = useState(0)
+
+  /* ── Custom cursor state ── */
+  const [cursor, setCursor] = useState({ x: 0, y: 0, show: false, color: '#ff3c3c' })
+  const cursorRaf = useRef(null)
 
   useEffect(() => {
     const calc = () => setSpacerH(window.innerHeight + TOTAL_SLIDE + 800)
@@ -161,10 +166,40 @@ export default function HorizontalProjects() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [onScroll])
 
+  /* ── Cursor handlers ── */
+  const handleCardMouseMove = useCallback((e, color) => {
+    cancelAnimationFrame(cursorRaf.current)
+    cursorRaf.current = requestAnimationFrame(() => {
+      setCursor(prev => ({ ...prev, x: e.clientX, y: e.clientY, color }))
+    })
+  }, [])
+
+  const handleCardEnter = useCallback((color) => {
+    setCursor(prev => ({ ...prev, show: true, color }))
+  }, [])
+
+  const handleCardLeave = useCallback(() => {
+    setCursor(prev => ({ ...prev, show: false }))
+  }, [])
+
   const seeMoreOpacity = easeInOut(norm(cardP, 0.82, 0.98))
 
   return (
     <>
+      {/* ── Global custom cursor ── */}
+      <div
+        className={`hp__cursor${cursor.show ? ' hp__cursor--show' : ''}`}
+        style={{
+          left:            cursor.x,
+          top:             cursor.y,
+          '--cursor-color': cursor.color,
+        }}
+        aria-hidden="true"
+      >
+        <span className="hp__cursor-dot" />
+        <span className="hp__cursor-label">Open</span>
+      </div>
+
       <div ref={spacerRef} className="hp__spacer" style={{ height: spacerH }} />
 
       <div
@@ -212,6 +247,9 @@ export default function HorizontalProjects() {
                     '--cc-dim2': proj.color + '2e',
                     background:  proj.bg,
                   }}
+                  onMouseMove={(e) => handleCardMouseMove(e, proj.color)}
+                  onMouseEnter={() => handleCardEnter(proj.color)}
+                  onMouseLeave={handleCardLeave}
                 >
                   <div className="hp__card-img-wrap">
                     <img className="hp__card-img" src={proj.image} alt={proj.title} loading="lazy" draggable="false" />
@@ -259,8 +297,6 @@ export default function HorizontalProjects() {
       {/* ── FAQ SECTION ── */}
       <section className={`hp__next${nextVisible ? ' hp__next--vis' : ''}`}>
         <div className="hp__faq-layout">
-
-          {/* Left col — label + big title */}
           <div className="hp__faq-left">
             <p className="hp__faq-eyebrow">FAQ</p>
             <h2 className="hp__faq-title">
@@ -270,14 +306,11 @@ export default function HorizontalProjects() {
               Everything you need to know before we start working together.
             </p>
           </div>
-
-          {/* Right col — accordion */}
           <div className="hp__faq-right">
             {faqs.map((item, i) => (
               <FaqItem key={i} q={item.q} a={item.a} />
             ))}
           </div>
-
         </div>
       </section>
     </>

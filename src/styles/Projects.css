@@ -556,3 +556,60 @@
   .hp__faq-right   { padding: 40px 24px 52px; }
   .hp__faq-title   { font-size: clamp(36px, 10vw, 52px); }
 }
+
+/* ─────────────────────────
+   CUSTOM CURSOR — OPEN
+───────────────────────── */
+.hp__cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translate(-50%, -50%);
+
+  opacity: 0;
+  scale: 0.75;
+  transition:
+    opacity 0.22s ease,
+    scale 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity, scale;
+}
+
+.hp__cursor--show {
+  opacity: 1;
+  scale: 1;
+}
+
+/* Coloured dot */
+.hp__cursor-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--cursor-color, #ff3c3c);
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+
+/* Label pill */
+.hp__cursor-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #080808;
+  background: var(--cursor-color, #ff3c3c);
+  padding: 5px 12px;
+  border-radius: 2px;
+  white-space: nowrap;
+  transition: background 0.3s;
+}
+
+/* Hide native cursor over cards */
+.hp__card,
+.hp__card * {
+  cursor: none;
+}

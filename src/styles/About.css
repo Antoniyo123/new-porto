@@ -359,3 +359,39 @@
 
   .ab__cta { font-size: 11px; padding: 16px 0; }
 }
+
+/* ── Custom cursor ── */
+.ab__cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, calc(-100% - 12px));
+
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #080808;
+  background: #ff3c3c;
+  padding: 5px 10px;
+  border-radius: 2px;
+  white-space: nowrap;
+
+  opacity: 0;
+  scale: 0.8;
+  transition: opacity 0.2s ease, scale 0.2s cubic-bezier(0.16,1,0.3,1);
+  will-change: transform, opacity;
+}
+
+.ab__cursor--show {
+  opacity: 1;
+  scale: 1;
+}
+
+/* Hilangkan cursor bawaan di area stats */
+.ab__stat,
+.ab__stat * {
+  cursor: none;
+}
